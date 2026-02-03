@@ -5,6 +5,10 @@
   <title>Motivates Cues Experiment</title>
   <script src="https://unpkg.com/jspsych@8.0.0"></script>
   <link href="https://unpkg.com/jspsych@8.0.0/css/jspsych.css" rel="stylesheet" type="text/css" />
+  <script src="https://unpkg.com/@jspsych/plugin-audio-keyboard-response@2.0.0"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@2.0.0"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-image-keyboard-response@2.0.0"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-image-keyboard-response@2.0.0"></script>
 </head>
 
 <body></body>
@@ -12,13 +16,66 @@
 
   /* initialize jsPsych */
   var jsPsych = initJsPsych({
-  on_finish: function() {
-    jsPsych.data.displayData();
-  }
-});
+    on_finish: function () {
+      jsPsych.data.displayData();
+    }
+  });
 
   /* create timeline */
   var timeline = [];
+
+  // Here's a way to structure a basic stimulus item
+  // How can you expand this to a full trial list?
+  // What counterbalancing steps do you need to take?
+  // How can you randomize your trial list?
+  var stimulus_item = {
+    audio: "stimuli/sounds/dog_sound_A.wav",
+    image: "stimuli/pictures/dog_york_1.jpg",
+    match: "yes",
+    cue_type: "sound",
+    congruence: "incongruent"
+  }
+
+  // basic trial procedure
+  // TO DO: how can you bundle this into a trial procedure?
+  // How can you have the experiment run through a full trial list?
+  // trial start
+  var trial_start = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: '<div style="font-size:30px;">Press space to start the trial</div>',
+    choices: [" "]
+  };
+  //fixation cross
+  var fixation = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: '<div style="font-size:60px;">+</div>',
+    choices: "NO_KEYS",
+    trial_duration: 250,
+  };
+  //audio cue
+  var audio_cue = {
+    type: jsPsychAudioKeyboardResponse,
+    stimulus: stimulus_item["audio"],
+    choices: "NO_KEYS",
+    trial_ends_after_audio: true
+  };
+  //1s of blank screen
+  var isi = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: '',
+    choices: "NO_KEYS",
+    trial_duration: 1000,
+  };
+  //show the image and wait for response
+  // how can you preload the image to make sure the timing is precise?
+  var image = {
+    type: jsPsychImageKeyboardResponse,
+    stimulus: stimulus_item["image"],
+    prompt: '<p style="font-size:30px;">Press z if the image matches the sound, m if the image does not match the sound.<p>',
+    choices: ["z","m"] // are these good response keys?
+  };
+
+  timeline.push(trial_start,fixation,audio_cue,isi,image);
 
 
   /* start the experiment */
