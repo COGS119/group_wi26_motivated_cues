@@ -12,6 +12,7 @@
   <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@2.0.0"></script>
   <script src="https://unpkg.com/@jspsych/plugin-image-keyboard-response@2.0.0"></script>
   <script src="https://unpkg.com/@jspsych/plugin-image-keyboard-response@2.0.0"></script>
+  <script src="trial_list/trial_list.js"></script>
 </head>
 
 <body></body>
@@ -27,6 +28,8 @@
   /* create timeline */
   var timeline = [];
 
+  console.log(trial_list)
+  console.log(trial_list[0]["cue_file"])
   //preloading all images and audio
 var preload = {
    type: jsPsychPreload,
