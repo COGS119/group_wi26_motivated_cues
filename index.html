@@ -117,6 +117,7 @@ var instructions = {
     <p> Press any key to begin.</p>
     ` 
   };
+
 timeline.push(instructions);
 
 //working on expanding to full trial list
@@ -184,26 +185,23 @@ var stim_order_rand = jsPsych.randomization.repeat(all_stimuli, 1);
  //making test blocks
 var test_block = stim_order_rand;
 
+
 for (let i=0; i < test_block.length; i++){
   var current_trial = test_block[i];
   // TO DO: how can you bundle this into a trial procedure?
   // trial start
-  var trial_start = {
-    type: jsPsychHtmlKeyboardResponse,
-    stimulus: '<div style="font-size:30px;">Press space to start the trial</div>',
-    choices: [" "]
-  };
+
   //fixation cross
   var fixation = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: '<div style="font-size:60px;">+</div>',
     choices: "NO_KEYS",
-    trial_duration: 250,
+    trial_duration: 300,
   };
   //audio cue
   var audio_cue = {
     type: jsPsychAudioKeyboardResponse,
-    stimulus: stimulus_item["audio"],
+    stimulus: current_trial["audio"],
     choices: "NO_KEYS",
     trial_ends_after_audio: true
   };
@@ -220,6 +218,9 @@ for (let i=0; i < test_block.length; i++){
     type: jsPsychImageKeyboardResponse,
     stimulus: current_trial["image"],
     choices: ["1","0"],
+    prompt: `<p>Press <strong>1</strong> if a match, Press <strong>0</strong> if not a match</p>
+    `,
+    post_trial_gap: 500,
     data: {
     type: current_trial['match'],
     congruence: current_trial['congruence'],
@@ -239,17 +240,19 @@ for (let i=0; i < test_block.length; i++){
   }
 }
 
-  timeline.push(trial_start,fixation,audio_cue,isi,test);
+  timeline.push(fixation,audio_cue,isi,test);
 };
 
-  /* start the experiment */
-  jsPsych.run(timeline);
-  
 //exit fullscreen
 timeline.push({
   type: jsPsychFullscreen,
   fullscreen_mode: false
-});
+})  
+
+/* start the experiment */
+  jsPsych.run(timeline);
+  
+;
 </script>
 
 </html>
