@@ -114,15 +114,16 @@ var instructions = {
     stimulus: `
     <p> On each trial, you will see picture and hear a word or a sound</p>
     <p>Click the '1' key if what you hear matches what you see, and hit the '0' key if what you hear does not match what you see.</p>
+    <p>Try to respond as quickly as you can </p>
     <p> Press any key to begin.</p>
     ` 
   };
 timeline.push(instructions);
 
-//working on expanding to full trial list
-//is there a better way to do this? can we read trials in from a csv maybe?
+//Creating full trial list with nested for loops and if statements
 var all_stimuli = [];
 
+//BIRD Trials
 var bird_pic = ['stimuli/pictures/bird_hawk_1.jpg',
      'stimuli/pictures/bird_hawk_2.jpg','stimuli/pictures/bird_song_1.jpg',
      'stimuli/pictures/bird_song_2.jpg'];
@@ -130,34 +131,222 @@ var bird_pic = ['stimuli/pictures/bird_hawk_1.jpg',
 var bird_sound = ['stimuli/sounds/bird_label_A.wav',
     'stimuli/sounds/bird_label_B.wav',
     'stimuli/sounds/bird_sound_A.wav',
-    'stimuli/sounds/bird_sound_B.wav',];
-
-var bird_match = ["yes", "no"];
+    'stimuli/sounds/bird_sound_B.wav',
+    'stimuli/sounds/dog_label_A.wav',
+    'stimuli/sounds/drum_sound_A.wav',
+    'stimuli/sounds/guitar_label_B.wav',
+    'stimuli/sounds/motor_sound_B.wav'
+  ];
 
 for (let i=0; i < bird_pic.length; i++){
   for (let j=0; j < bird_sound.length; j++){
+    let match = 'no';
+      if (bird_pic[i].includes('hawk') && (bird_sound[j].includes('label') || bird_sound[j].includes('sound_A'))){
+        match = 'yes';
+      }
+      else if(bird_pic[i].includes('song') && (bird_sound[j].includes('label') || bird_sound[j].includes('sound_B'))){
+        match = 'yes';
+      }
     var current_trial = {
       audio: bird_sound[j],
       image: bird_pic[i],
-      if (bird_pic[i].includes('hawk') & (bird.sound[j].includes('label') || bird.sound[j].includes('sound_A'))){
-        current_trial['match']: 'yes'
-      };
-      else if(bird_pic[i].includes('song') & (bird.sound[j].includes('label') || bird.sound[j].includes('sound_B'))){
-        current_trial['match']: 'yes'
-      };
-      else {
-        current_trial['match']: 'yes'
-      }
+      match: match,
+      correct_response: '1',
     }
+    all_stimuli.push(current_trial);
   }
-}
 
+};
 
+//DOG Trials
+var dog_pic = ['stimuli/pictures/dog_rott_1.jpg',
+     'stimuli/pictures/dog_rott_2.jpg',
+     'stimuli/pictures/dog_york_1.jpg',
+     'stimuli/pictures/dog_york_2.jpg',];
+
+var dog_sound = ['stimuli/sounds/dog_label_A.wav', 
+    'stimuli/sounds/dog_label_B.wav', 
+    'stimuli/sounds/dog_sound_A.wav', 
+    'stimuli/sounds/dog_sound_B.wav',
+    'stimuli/sounds/drum_label_A.wav',
+    'stimuli/sounds/guitar_sound_A.wav',
+    'stimuli/sounds/motor_label_B.wav',
+    'stimuli/sounds/phone_sound_B.wav'
+  ];
+
+for (let i=0; i < dog_pic.length; i++){
+  for (let j=0; j < dog_sound.length; j++){
+    let match = 'no';
+      if (dog_pic[i].includes('rott') && (dog_sound[j].includes('label') ||dog_sound[j].includes('sound_A'))){
+        match = 'yes';
+      }
+      else if(dog_pic[i].includes('york') && (dog_sound[j].includes('label') || dog_sound[j].includes('sound_B'))){
+        match = 'yes';
+      }
+    var current_trial = {
+      audio: dog_sound[j],
+      image: dog_pic[i],
+      match: match,
+      correct_response: '1',
+    }
+    all_stimuli.push(current_trial);
+  }
+};
+
+//DRUM Trials
+var drum_pic = ['stimuli/pictures/drum_bongo_1.jpg',
+     'stimuli/pictures/drum_bongo_2.jpg',
+     'stimuli/pictures/drum_kit_1.jpg',
+     'stimuli/pictures/drum_kit_2.jpg',];
+
+var drum_sound = ['stimuli/sounds/drum_label_A.wav', 
+    'stimuli/sounds/drum_label_B.wav', 
+    'stimuli/sounds/drum_sound_A.wav', 
+    'stimuli/sounds/drum_sound_B.wav',
+    'stimuli/sounds/guitar_label_A.wav',
+    'stimuli/sounds/motor_sound_A.wav',
+    'stimuli/sounds/phone_label_B.wav',
+    'stimuli/sounds/bird_sound_B.wav'
+  ];
+
+for (let i=0; i < drum_pic.length; i++){
+  for (let j=0; j < drum_sound.length; j++){
+    let match = 'no';
+      if (drum_pic[i].includes('bongo') && (drum_sound[j].includes('label') ||drum_sound[j].includes('sound_B'))){
+        match = 'yes';
+      }
+      else if(drum_pic[i].includes('kit') && (drum_sound[j].includes('label') || drum_sound[j].includes('sound_A'))){
+        match = 'yes';
+      }
+    var current_trial = {
+      audio: drum_sound[j],
+      image: drum_pic[i],
+      match: match,
+      correct_response: '1',
+    }
+    all_stimuli.push(current_trial);
+  }
+};
+
+//PHONE Trials
+var phone_pic = ['stimuli/pictures/phone_cell_1.jpg', 
+     'stimuli/pictures/phone_cell_2.jpg', 
+     'stimuli/pictures/phone_rotary_1.jpg', 
+     'stimuli/pictures/phone_rotary_2.jpg'];
+
+var phone_sound = ['stimuli/sounds/phone_label_A.wav', 
+    'stimuli/sounds/phone_label_B.wav', 
+    'stimuli/sounds/phone_sound_A.wav',
+    'stimuli/sounds/phone_sound_B.wav',
+    'stimuli/sounds/bird_label_A.wav',
+    'stimuli/sounds/dog_sound_A.wav',
+    'stimuli/sounds/drum_label_B.wav',
+    'stimuli/sounds/guitar_sound_B.wav'
+  ];
+
+for (let i=0; i < phone_pic.length; i++){
+  for (let j=0; j < phone_sound.length; j++){
+    let match = 'no';
+      if (phone_pic[i].includes('cell') && (phone_sound[j].includes('label') ||phone_sound[j].includes('sound_A'))){
+        match = 'yes';
+      }
+      else if(phone_pic[i].includes('rotary') && (phone_sound[j].includes('label') || phone_sound[j].includes('sound_B'))){
+        match = 'yes';
+      }
+    var current_trial = {
+      audio: phone_sound[j],
+      image: phone_pic[i],
+      match: match,
+      correct_response: '1',
+    }
+    all_stimuli.push(current_trial);
+  }
+};
+//GUITAR Trials
+var guitar_pic = ['stimuli/pictures/guitar_acoustic_1.jpg',
+     'stimuli/pictures/guitar_acoustic_2.jpg', 
+     'stimuli/pictures/guitar_electric_1.jpg',
+     'stimuli/pictures/guitar_electric_2.jpg',
+    ];
+
+var guitar_sound = ['stimuli/sounds/guitar_label_A.wav', 
+    'stimuli/sounds/guitar_label_B.wav', 
+    'stimuli/sounds/guitar_sound_A.wav', 
+    'stimuli/sounds/guitar_sound_B.wav',
+    'stimuli/sounds/motor_label_A.wav',
+    'stimuli/sounds/phone_sound_A.wav',
+    'stimuli/sounds/bird_label_B.wav',
+    'stimuli/sounds/dog_sound_B.wav'];
+
+for (let i=0; i < guitar_pic.length; i++){
+  for (let j=0; j < guitar_sound.length; j++){
+    let match = 'no';
+      if (guitar_pic[i].includes('electric') && (guitar_sound[j].includes('label') ||guitar_sound[j].includes('sound_A'))){
+        match = 'yes';
+      }
+      else if(guitar_pic[i].includes('acoustic') && (guitar_sound[j].includes('label') || guitar_sound[j].includes('sound_B'))){
+        match = 'yes';
+      }
+    var current_trial = {
+      audio: guitar_sound[j],
+      image: guitar_pic[i],
+      match: match,
+      correct_response: '1',
+    }
+    all_stimuli.push(current_trial);
+  }
+};
+
+//MOTOR Trials
+var motor_pic = ['stimuli/pictures/motor_dirt_1.jpg', 
+     'stimuli/pictures/motor_dirt_2.jpg', 
+     'stimuli/pictures/motor_harley_1.jpg', 
+     'stimuli/pictures/motor_harley_2.jpg'];
+
+var motor_sound = ['stimuli/sounds/motor_label_A.wav', 
+    'stimuli/sounds/motor_label_B.wav', 
+    'stimuli/sounds/motor_sound_A.wav', 
+    'stimuli/sounds/motor_sound_B.wav',
+    'stimuli/sounds/phone_label_A.wav',
+    'stimuli/sounds/bird_sound_A.wav',
+    'stimuli/sounds/dog_label_B.wav',
+    'stimuli/sounds/drum_sound_B.wav' ];
+
+for (let i=0; i < motor_pic.length; i++){
+  for (let j=0; j < motor_sound.length; j++){
+    let match = 'no';
+    let correct_response = '1'
+      if (motor_pic[i].includes('dirt') && (motor_sound[j].includes('label') ||motor_sound[j].includes('sound_A'))){
+        match = 'yes';
+      }
+      else if(motor_pic[i].includes('harley') && (motor_sound[j].includes('label') || motor_sound[j].includes('sound_B'))){
+        match = 'yes';
+      }
+      else if(!motor_sound[j].includes('motor')){
+        match = 'no';
+        correct_response = '0';
+      }
+
+    var current_trial = {
+      audio: motor_sound[j],
+      image: motor_pic[i],
+      match: match,
+      correct_response: correct_response,
+    }
+    all_stimuli.push(current_trial);
+  }
+
+};
+
+//////////////////////////////////////////////////////////////////////////////////This is for me so I know where I stopped creating trials
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 //randomizing order of trials
 var stim_order_rand = jsPsych.randomization.repeat(all_stimuli, 1);
- //making test blocks
+
+ //making test blocks for now its one giant block...
+ //should fix this because its a LOT of trials
 var test_block = stim_order_rand;
 
 for (let i=0; i < test_block.length; i++){
@@ -197,14 +386,12 @@ for (let i=0; i < test_block.length; i++){
     stimulus: current_trial["image"],
     choices: ["1","0"],
     data: {
-    type: current_trial['match'],
-    congruence: current_trial['congruence'],
+    match: current_trial['match'],
     correct_response: current_trial['correct']
   },
   on_finish: function(data){
     console.log(data.response);
-    console.log(data.type);
-    console.log(data.congruence);
+    console.log(data.match);
     //score the keyboard response as correct or incorrect
     if(data.response == data.correct_response){
       data.correct = true;
@@ -214,9 +401,15 @@ for (let i=0; i < test_block.length; i++){
     console.log(data.correct);
   }
 }
-
   timeline.push(trial_start,fixation,audio_cue,isi,test);
 };
+
+var end_exp = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: '<div style="font-size:30px;">You have completed the experiment! Thank you for your time! Press any key to end.</div>'
+};
+
+timeline.push(end_exp);
 
   /* start the experiment */
   jsPsych.run(timeline);
