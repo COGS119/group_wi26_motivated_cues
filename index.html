@@ -141,17 +141,23 @@ var bird_sound = ['stimuli/sounds/bird_label_A.wav',
 for (let i=0; i < bird_pic.length; i++){
   for (let j=0; j < bird_sound.length; j++){
     let match = 'no';
+    let correct_response = '1';
       if (bird_pic[i].includes('hawk') && (bird_sound[j].includes('label') || bird_sound[j].includes('sound_A'))){
         match = 'yes';
       }
       else if(bird_pic[i].includes('song') && (bird_sound[j].includes('label') || bird_sound[j].includes('sound_B'))){
         match = 'yes';
       }
+       //for invalid trials
+      else if(!bird_sound[j].includes('bird')){
+        match = 'no';
+        correct_response = '0';
+      }
     var current_trial = {
       audio: bird_sound[j],
       image: bird_pic[i],
       match: match,
-      correct_response: '1',
+      correct_response: correct_response,
     }
     all_stimuli.push(current_trial);
   }
@@ -177,17 +183,23 @@ var dog_sound = ['stimuli/sounds/dog_label_A.wav',
 for (let i=0; i < dog_pic.length; i++){
   for (let j=0; j < dog_sound.length; j++){
     let match = 'no';
+    let correct_response = '1';
       if (dog_pic[i].includes('rott') && (dog_sound[j].includes('label') ||dog_sound[j].includes('sound_A'))){
         match = 'yes';
       }
       else if(dog_pic[i].includes('york') && (dog_sound[j].includes('label') || dog_sound[j].includes('sound_B'))){
         match = 'yes';
       }
+       //for invalid trials
+      else if(!dog_sound[j].includes('dog')){
+        match = 'no';
+        correct_response = '0';
+      }
     var current_trial = {
       audio: dog_sound[j],
       image: dog_pic[i],
       match: match,
-      correct_response: '1',
+      correct_response: correct_response,
     }
     all_stimuli.push(current_trial);
   }
@@ -212,17 +224,23 @@ var drum_sound = ['stimuli/sounds/drum_label_A.wav',
 for (let i=0; i < drum_pic.length; i++){
   for (let j=0; j < drum_sound.length; j++){
     let match = 'no';
+    let correct_response = '1';
       if (drum_pic[i].includes('bongo') && (drum_sound[j].includes('label') ||drum_sound[j].includes('sound_B'))){
         match = 'yes';
       }
       else if(drum_pic[i].includes('kit') && (drum_sound[j].includes('label') || drum_sound[j].includes('sound_A'))){
         match = 'yes';
       }
+       //for invalid trials
+      else if(!drum_sound[j].includes('drum')){
+        match = 'no';
+        correct_response = '0';
+      }
     var current_trial = {
       audio: drum_sound[j],
       image: drum_pic[i],
       match: match,
-      correct_response: '1',
+      correct_response: correct_response,
     }
     all_stimuli.push(current_trial);
   }
@@ -247,17 +265,23 @@ var phone_sound = ['stimuli/sounds/phone_label_A.wav',
 for (let i=0; i < phone_pic.length; i++){
   for (let j=0; j < phone_sound.length; j++){
     let match = 'no';
+    let correct_response = '1';
       if (phone_pic[i].includes('cell') && (phone_sound[j].includes('label') ||phone_sound[j].includes('sound_A'))){
         match = 'yes';
       }
       else if(phone_pic[i].includes('rotary') && (phone_sound[j].includes('label') || phone_sound[j].includes('sound_B'))){
         match = 'yes';
       }
+       //for invalid trials
+      else if(!phone_sound[j].includes('phone')){
+        match = 'no';
+        correct_response = '0';
+      }
     var current_trial = {
       audio: phone_sound[j],
       image: phone_pic[i],
       match: match,
-      correct_response: '1',
+      correct_response: correct_response,
     }
     all_stimuli.push(current_trial);
   }
@@ -281,17 +305,23 @@ var guitar_sound = ['stimuli/sounds/guitar_label_A.wav',
 for (let i=0; i < guitar_pic.length; i++){
   for (let j=0; j < guitar_sound.length; j++){
     let match = 'no';
+    let correct_response = '1';
       if (guitar_pic[i].includes('electric') && (guitar_sound[j].includes('label') ||guitar_sound[j].includes('sound_A'))){
         match = 'yes';
       }
       else if(guitar_pic[i].includes('acoustic') && (guitar_sound[j].includes('label') || guitar_sound[j].includes('sound_B'))){
         match = 'yes';
       }
+       //for invalid trials
+      else if(!guitar_sound[j].includes('guitar')){
+        match = 'no';
+        correct_response = '0';
+      }
     var current_trial = {
       audio: guitar_sound[j],
       image: guitar_pic[i],
       match: match,
-      correct_response: '1',
+      correct_response: correct_response,
     }
     all_stimuli.push(current_trial);
   }
@@ -315,13 +345,14 @@ var motor_sound = ['stimuli/sounds/motor_label_A.wav',
 for (let i=0; i < motor_pic.length; i++){
   for (let j=0; j < motor_sound.length; j++){
     let match = 'no';
-    let correct_response = '1'
+    let correct_response = '1';
       if (motor_pic[i].includes('dirt') && (motor_sound[j].includes('label') ||motor_sound[j].includes('sound_A'))){
         match = 'yes';
       }
       else if(motor_pic[i].includes('harley') && (motor_sound[j].includes('label') || motor_sound[j].includes('sound_B'))){
         match = 'yes';
       }
+      //for invalid trials
       else if(!motor_sound[j].includes('motor')){
         match = 'no';
         correct_response = '0';
@@ -387,7 +418,8 @@ for (let i=0; i < test_block.length; i++){
     choices: ["1","0"],
     data: {
     match: current_trial['match'],
-    correct_response: current_trial['correct']
+    correct_response: current_trial['correct_response'],
+
   },
   on_finish: function(data){
     console.log(data.response);
