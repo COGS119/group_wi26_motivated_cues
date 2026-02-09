@@ -27,7 +27,7 @@
   /* create timeline */
   var timeline = [];
 
-  //preloading all images and audio
+//preloading all images and audio
 var preload = {
    type: jsPsychPreload,
    images: [
@@ -93,13 +93,13 @@ timeline.push(preload);
     fullscreen_mode: true
   });
 
-  //adding ppt id entry (from label task)
+  //adding ppt id entry (adapted from label task)
 var participant_id_entry = {
     type: jsPsychSurveyText,
     //the name part of the dict is used later to get whatever they filled in for the question 
     questions: [{prompt: "Please enter your participant ID (e.g. p1):", name:"participant_id"}],
     on_finish: function (data){
-      //we get the data.response because thats what theppt actually enters
+      //we get the data.response because thats what the ppt actually enters
       console.log(data.response)
       jsPsych.data.addProperties({
         participant: data.response.participant_id
@@ -108,7 +108,8 @@ var participant_id_entry = {
   }; 
 timeline.push(participant_id_entry);
 
-//adding instructions. Key pressing instructions occur here (remove from each trial individually)
+//adding instructions. Key pressing instructions occur here (remove from each trial individually) 
+//Add later at start of each block?
 var instructions = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: `
@@ -140,18 +141,22 @@ var bird_sound = ['stimuli/sounds/bird_label_A.wav',
 
 for (let i=0; i < bird_pic.length; i++){
   for (let j=0; j < bird_sound.length; j++){
-    let match = 'no';
-    let correct_response = '1';
       if (bird_pic[i].includes('hawk') && (bird_sound[j].includes('label') || bird_sound[j].includes('sound_A'))){
         match = 'yes';
+        correct_response = '1';
       }
       else if(bird_pic[i].includes('song') && (bird_sound[j].includes('label') || bird_sound[j].includes('sound_B'))){
         match = 'yes';
+        correct_response = '1';
       }
        //for invalid trials
       else if(!bird_sound[j].includes('bird')){
         match = 'no';
         correct_response = '0';
+      }
+      else {
+        match = 'no';
+        correct_response = '1';
       }
     var current_trial = {
       audio: bird_sound[j],
@@ -182,18 +187,22 @@ var dog_sound = ['stimuli/sounds/dog_label_A.wav',
 
 for (let i=0; i < dog_pic.length; i++){
   for (let j=0; j < dog_sound.length; j++){
-    let match = 'no';
-    let correct_response = '1';
       if (dog_pic[i].includes('rott') && (dog_sound[j].includes('label') ||dog_sound[j].includes('sound_A'))){
         match = 'yes';
+        correct_response = '1';
       }
       else if(dog_pic[i].includes('york') && (dog_sound[j].includes('label') || dog_sound[j].includes('sound_B'))){
         match = 'yes';
+        correct_response = '1';
       }
        //for invalid trials
       else if(!dog_sound[j].includes('dog')){
         match = 'no';
         correct_response = '0';
+      }
+      else {
+        match = 'no';
+        correct_response = '1';
       }
     var current_trial = {
       audio: dog_sound[j],
@@ -223,18 +232,22 @@ var drum_sound = ['stimuli/sounds/drum_label_A.wav',
 
 for (let i=0; i < drum_pic.length; i++){
   for (let j=0; j < drum_sound.length; j++){
-    let match = 'no';
-    let correct_response = '1';
       if (drum_pic[i].includes('bongo') && (drum_sound[j].includes('label') ||drum_sound[j].includes('sound_B'))){
         match = 'yes';
+        correct_response = '1';
       }
       else if(drum_pic[i].includes('kit') && (drum_sound[j].includes('label') || drum_sound[j].includes('sound_A'))){
         match = 'yes';
+        correct_response = '1';
       }
        //for invalid trials
       else if(!drum_sound[j].includes('drum')){
         match = 'no';
         correct_response = '0';
+      }
+      else {
+        match = 'no';
+        correct_response = '1';
       }
     var current_trial = {
       audio: drum_sound[j],
@@ -264,18 +277,22 @@ var phone_sound = ['stimuli/sounds/phone_label_A.wav',
 
 for (let i=0; i < phone_pic.length; i++){
   for (let j=0; j < phone_sound.length; j++){
-    let match = 'no';
-    let correct_response = '1';
       if (phone_pic[i].includes('cell') && (phone_sound[j].includes('label') ||phone_sound[j].includes('sound_A'))){
         match = 'yes';
+        correct_response = '1';
       }
       else if(phone_pic[i].includes('rotary') && (phone_sound[j].includes('label') || phone_sound[j].includes('sound_B'))){
         match = 'yes';
+        correct_response = '1';
       }
        //for invalid trials
       else if(!phone_sound[j].includes('phone')){
         match = 'no';
         correct_response = '0';
+      }
+      else {
+        match = 'no';
+        correct_response = '1';
       }
     var current_trial = {
       audio: phone_sound[j],
@@ -304,18 +321,22 @@ var guitar_sound = ['stimuli/sounds/guitar_label_A.wav',
 
 for (let i=0; i < guitar_pic.length; i++){
   for (let j=0; j < guitar_sound.length; j++){
-    let match = 'no';
-    let correct_response = '1';
       if (guitar_pic[i].includes('electric') && (guitar_sound[j].includes('label') ||guitar_sound[j].includes('sound_A'))){
         match = 'yes';
+        correct_response = '1';
       }
       else if(guitar_pic[i].includes('acoustic') && (guitar_sound[j].includes('label') || guitar_sound[j].includes('sound_B'))){
         match = 'yes';
+        correct_response = '1';
       }
-       //for invalid trials
+      //for invalid trials
       else if(!guitar_sound[j].includes('guitar')){
         match = 'no';
         correct_response = '0';
+      }
+      else {
+        match = 'no';
+        correct_response = '1';
       }
     var current_trial = {
       audio: guitar_sound[j],
@@ -344,20 +365,23 @@ var motor_sound = ['stimuli/sounds/motor_label_A.wav',
 
 for (let i=0; i < motor_pic.length; i++){
   for (let j=0; j < motor_sound.length; j++){
-    let match = 'no';
-    let correct_response = '1';
       if (motor_pic[i].includes('dirt') && (motor_sound[j].includes('label') ||motor_sound[j].includes('sound_A'))){
         match = 'yes';
+        correct_response = '1';
       }
       else if(motor_pic[i].includes('harley') && (motor_sound[j].includes('label') || motor_sound[j].includes('sound_B'))){
         match = 'yes';
+        correct_response = '1';
       }
       //for invalid trials
       else if(!motor_sound[j].includes('motor')){
         match = 'no';
         correct_response = '0';
       }
-
+      else {
+        match = 'no';
+        correct_response = '1';
+      }
     var current_trial = {
       audio: motor_sound[j],
       image: motor_pic[i],
@@ -366,7 +390,6 @@ for (let i=0; i < motor_pic.length; i++){
     }
     all_stimuli.push(current_trial);
   }
-
 };
 
 //////////////////////////////////////////////////////////////////////////////////This is for me so I know where I stopped creating trials
@@ -421,6 +444,7 @@ for (let i=0; i < test_block.length; i++){
     correct_response: current_trial['correct_response'],
 
   },
+
   on_finish: function(data){
     console.log(data.response);
     console.log(data.match);
@@ -432,8 +456,24 @@ for (let i=0; i < test_block.length; i++){
     }
     console.log(data.correct);
   }
-}
-  timeline.push(trial_start,fixation,audio_cue,isi,test);
+};
+  //adapted from Label Task but using audio
+  var feedback = {
+    type: jsPsychAudioKeyboardResponse,
+    trial_duration: 1000,
+    //adding trial gap
+    post_trial_gap: 100,
+    stimulus: function(){
+    var last_trial_correct = jsPsych.data.get().last(1).values()[0].correct;
+    if(last_trial_correct){
+      return 'stimuli/sounds/bleep.wav';
+    } else {
+      return 'stimuli/sounds/buzz.wav';
+      }
+    }
+  };
+  timeline.push(trial_start,fixation,audio_cue,isi,test,feedback);
+
 };
 
 var end_exp = {
