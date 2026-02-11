@@ -266,78 +266,95 @@ var invalid_trials = stim_order_rand.filter(t => t.correct_response === '0').sli
 var relevant_stimuli = valid_trials.concat(invalid_trials);
 var final_stimuli = jsPsych.randomization.repeat(relevant_stimuli, 1);
 
-//should fix this because its a LOT of trials
-var test_block = final_stimuli;
+var block1 = final_stimuli.slice(0,24);
+var block2 = final_stimuli.slice(24,48);
+var block3 = final_stimuli.slice(48,72);
+var block4 = final_stimuli.slice(72,96);
+var block5 = final_stimuli.slice(96,120);
+var block6 = final_stimuli.slice(120,144);
+var block7 = final_stimuli.slice(144,168);
+var block8 = final_stimuli.slice(168,192);
 
-// TRIAL PROCEDURE
-for (let i=0; i < test_block.length; i++){
-  var current_trial = test_block[i];
-  // trial start
-  var trial_start = {
-    type: jsPsychHtmlKeyboardResponse,
-    stimulus: '<div style="font-size:30px;">Press space to start the trial</div>',
-    choices: [" "]
-  };
-  //fixation cross
-  var fixation = {
-    type: jsPsychHtmlKeyboardResponse,
-    stimulus: '<div style="font-size:60px;">+</div>',
-    choices: "NO_KEYS",
-    trial_duration: 250,
-  };
-  //audio cue
-  var audio_cue = {
-    type: jsPsychAudioKeyboardResponse,
-    stimulus: current_trial["audio"],
-    choices: "NO_KEYS",
-    trial_ends_after_audio: true
-  };
-  //1s of blank screen
-  var isi = {
-    type: jsPsychHtmlKeyboardResponse,
-    stimulus: '',
-    choices: "NO_KEYS",
-    trial_duration: 1000,
-  };
+var blocks = [block1, block2, block3, block4, block5, block6, block7, block8];
 
-//main test variable: we collect response data here
-  var test = {
-    type: jsPsychImageKeyboardResponse,
-    stimulus: current_trial["image"],
-    choices: ["1","0"],
-    data: {
-    match: current_trial['match'],
-    correct_response: current_trial['correct_response'],
-  },
+for (let b=0; b < blocks.length; b++){
+  // TRIAL PROCEDURE
+  var current_block = blocks[b];
+  for (let i=0; i < current_block.length; i++){
+    var current_trial = current_block[i];
+    // trial start
+    var trial_start = {
+      type: jsPsychHtmlKeyboardResponse,
+      stimulus: '<div style="font-size:30px;">Press space to start the trial</div>',
+      choices: [" "]
+    };
+    //fixation cross
+    var fixation = {
+      type: jsPsychHtmlKeyboardResponse,
+      stimulus: '<div style="font-size:60px;">+</div>',
+      choices: "NO_KEYS",
+      trial_duration: 250,
+    };
+    //audio cue
+    var audio_cue = {
+      type: jsPsychAudioKeyboardResponse,
+      stimulus: current_trial["audio"],
+      choices: "NO_KEYS",
+      trial_ends_after_audio: true
+    };
+    //1s of blank screen
+    var isi = {
+      type: jsPsychHtmlKeyboardResponse,
+      stimulus: '',
+      choices: "NO_KEYS",
+      trial_duration: 1000,
+    };
 
-  on_finish: function(data){
-    console.log(data.response);
-    console.log(data.match);
-    //score the keyboard response as correct or incorrect
-    if(data.response == data.correct_response){
-      data.correct = true;
-    } else{
-      data.correct = false;
-    }
-    console.log(data.correct);
-  }
-};
-  //adapted from Label Task but using audio for feedback. Gets the last response correctness and returns relevant audio
-  var feedback = {
-    type: jsPsychAudioKeyboardResponse,
-    trial_duration: 1000,
-    //adding trial gap
-    post_trial_gap: 100,
-    stimulus: function(){
-    var last_trial_correct = jsPsych.data.get().last(1).values()[0].correct;
-    if(last_trial_correct){
-      return 'stimuli/sounds/bleep.wav';
-    } else {
-      return 'stimuli/sounds/buzz.wav';
+  //main test variable: we collect response data here
+    var test = {
+      type: jsPsychImageKeyboardResponse,
+      stimulus: current_trial["image"],
+      choices: ["1","0"],
+      data: {
+      match: current_trial['match'],
+      correct_response: current_trial['correct_response'],
+    },
+
+    on_finish: function(data){
+      console.log(data.response);
+      console.log(data.match);
+      //score the keyboard response as correct or incorrect
+      if(data.response == data.correct_response){
+        data.correct = true;
+      } else{
+        data.correct = false;
       }
+      console.log(data.correct);
     }
   };
+    //adapted from Label Task but using audio for feedback. Gets the last response correctness and returns relevant audio
+    var feedback = {
+      type: jsPsychAudioKeyboardResponse,
+      trial_duration: 1000,
+      //adding trial gap
+      post_trial_gap: 100,
+      stimulus: function(){
+      var last_trial_correct = jsPsych.data.get().last(1).values()[0].correct;
+      if(last_trial_correct){
+        return 'stimuli/sounds/bleep.wav';
+      } else {
+        return 'stimuli/sounds/buzz.wav';
+        }
+      }
+    };
   timeline.push(trial_start,fixation,audio_cue,isi,test,feedback);
+  };
+  var break_trial = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: '<p>You have completed a block. Press R when you are ready to continue</p>',
+    choices: ['r']
+  };
+  timeline.push(break_trial);
 };
 
 var end_exp = {
