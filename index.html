@@ -281,15 +281,26 @@
   var relevant_stimuli = valid_trials.concat(invalid_trials);
   var final_stimuli = jsPsych.randomization.repeat(relevant_stimuli, 1);
 
-  //should fix this because its a LOT of trials
-  var test_block = final_stimuli;
+var block1 = final_stimuli.slice(0,24);
+var block2 = final_stimuli.slice(24,48);
+var block3 = final_stimuli.slice(48,72);
+var block4 = final_stimuli.slice(72,96);
+var block5 = final_stimuli.slice(96,120);
+var block6 = final_stimuli.slice(120,144);
+var block7 = final_stimuli.slice(144,168);
+var block8 = final_stimuli.slice(168,192);
 
+var blocks = [block1, block2, block3, block4, block5, block6, block7, block8];
+
+for (let b=0; b < blocks.length; b++){
   // TRIAL PROCEDURE
-  for (let i = 0; i < test_block.length; i++) {
-    var current_trial = test_block[i];
+  var current_block = blocks[b];
+  for (let i=0; i < current_block.length; i++){
+    var current_trial = current_block[i];
     // trial start
     var trial_start = {
       type: jsPsychHtmlKeyboardResponse,
+      prompt: '<p style="font-size:30px;">Press 1 if the image matches the sound, 0 if the image does not match the sound.<p>',
       stimulus: '<div style="font-size:30px;">Press space to start the trial</div>',
       choices: [" "]
     };
@@ -315,45 +326,130 @@
       trial_duration: 1000,
     };
 
-    //main test variable: we collect response data here
+  //main test variable: we collect response data here
     var test = {
       type: jsPsychImageKeyboardResponse,
       stimulus: current_trial["image"],
-      choices: ["1", "0"],
+      choices: ["1","0"],
       data: {
-        match: current_trial['match'],
-        correct_response: current_trial['correct_response'],
-      },
+      match: current_trial['match'],
+      correct_response: current_trial['correct_response'],
+    },
 
-      on_finish: function (data) {
-        console.log(data.response);
-        console.log(data.match);
-        //score the keyboard response as correct or incorrect
-        if (data.response == data.correct_response) {
-          data.correct = true;
-        } else {
-          data.correct = false;
-        }
-        console.log(data.correct);
+    on_finish: function(data){
+      console.log(data.response);
+      console.log(data.match);
+      //score the keyboard response as correct or incorrect
+      if(data.response == data.correct_response){
+        data.correct = true;
+      } else{
+        data.correct = false;
       }
-    };
+      console.log(data.correct);
+    }
+  };
     //adapted from Label Task but using audio for feedback. Gets the last response correctness and returns relevant audio
     var feedback = {
       type: jsPsychAudioKeyboardResponse,
       trial_duration: 1000,
       //adding trial gap
       post_trial_gap: 100,
-      stimulus: function () {
-        var last_trial_correct = jsPsych.data.get().last(1).values()[0].correct;
-        if (last_trial_correct) {
-          return 'stimuli/sounds/bleep.wav';
-        } else {
-          return 'stimuli/sounds/buzz.wav';
+      stimulus: function(){
+      var last_trial_correct = jsPsych.data.get().last(1).values()[0].correct;
+      if(last_trial_correct){
+        return 'stimuli/sounds/bleep.wav';
+      } else {
+        return 'stimuli/sounds/buzz.wav';
         }
       }
     };
-    timeline.push(trial_start, fixation, audio_cue, isi, test, feedback);
+  timeline.push(trial_start,fixation,audio_cue,isi,test,feedback);
   };
+  var break_trial = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: '<p>You have completed a block. Press R when you are ready to continue</p>',
+    choices: ['r']
+  };
+  timeline.push(break_trial);
+};
+
+/// demographic data collection
+var age = {
+    type: jsPsychSurveyText,
+    questions: [{prompt: "Please enter your age in years:", name:"age"}],
+    choices: ["1","0","2","3","4","5","6","7","8","9"],
+    on_finish: function (data){
+      console.log(data.response)
+      jsPsych.data.addProperties({
+        participant: data.response.age
+      });
+    }
+  }; 
+timeline.push(age);
+
+var gender_identity = {
+    type: jsPsychSurveyText,
+    questions: [{prompt: "What is your gender identity? (e.g. non-binary, male, etc.):", name:"gender"}],
+    on_finish: function (data){
+      console.log(data.response)
+      jsPsych.data.addProperties({
+        participant: data.response.gender
+      });
+    }
+  }; 
+timeline.push(gender_identity);
+
+var mus_exp= {
+    type: jsPsychSurveyText,
+    choices: ["1","0"],
+    questions: [{prompt: "Do you have musical experience (e.g. playing an instrument or singing)? Please enter 1 if yes, and 0 if no", name:"mus_exp"}],
+    on_finish: function (data){
+      console.log(data.response)
+      jsPsych.data.addProperties({
+        participant: data.response.mus_exp
+      });
+    }
+  }; 
+timeline.push(mus_exp);
+
+var inst_exp= {
+    type: jsPsychSurveyText,
+    choices: ["1","0"],
+    questions: [{prompt: "Do you (or have you) play an instrument? ? Please enter 1 if yes, and 0 if no", name:"inst_exp"}],
+    on_finish: function (data){
+      console.log(data.response)
+      jsPsych.data.addProperties({
+        participant: data.response.inst_exp
+      });
+    }
+  }; 
+timeline.push(inst_exp);
+
+var years_exp= {
+    type: jsPsychSurveyText,
+    choices: ["1","0","2","3","4","5","6","7","8","9"],
+    questions: [{prompt: "If you do have musical experience, approximately how many years? If you have no experience, please enter 0. ", name:"years_exp"}],
+    on_finish: function (data){
+      console.log(data.response)
+      jsPsych.data.addProperties({
+        participant: data.response.years_exp
+      });
+    }
+  }; 
+timeline.push(years_exp);
+
+var casual_exp= {
+    type: jsPsychSurveyText,
+    choices: ["1","0","2","3","4","5","6","7","8","9"],
+    questions: [{prompt: "How often do you listen to music? (estimate average hours per day)", name:"casual_exp"}],
+    on_finish: function (data){
+      console.log(data.response)
+      jsPsych.data.addProperties({
+        participant: data.response.casual_exp
+      });
+    }
+  }; 
+timeline.push(casual_exp);
 
   //PLEASE KEEP FOR ALL FUTURE ITERATIONS
   //this portion of the code ensures that the data gets sent to be stored on OSF
