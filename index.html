@@ -285,6 +285,7 @@ for (let b=0; b < blocks.length; b++){
     // trial start
     var trial_start = {
       type: jsPsychHtmlKeyboardResponse,
+      prompt: '<p style="font-size:30px;">Press 1 if the image matches the sound, 0 if the image does not match the sound.<p>',
       stimulus: '<div style="font-size:30px;">Press space to start the trial</div>',
       choices: [" "]
     };
@@ -356,6 +357,84 @@ for (let b=0; b < blocks.length; b++){
   };
   timeline.push(break_trial);
 };
+
+/// demographic data collection
+var age = {
+    type: jsPsychSurveyText,
+    questions: [{prompt: "Please enter your age in years:", name:"age"}],
+    choices: ["1","0","2","3","4","5","6","7","8","9"],
+    on_finish: function (data){
+      console.log(data.response)
+      jsPsych.data.addProperties({
+        participant: data.response.age
+      });
+    }
+  }; 
+timeline.push(age);
+
+var gender_identity = {
+    type: jsPsychSurveyText,
+    questions: [{prompt: "What is your gender identity? (e.g. non-binary, male, etc.):", name:"gender"}],
+    on_finish: function (data){
+      console.log(data.response)
+      jsPsych.data.addProperties({
+        participant: data.response.gender
+      });
+    }
+  }; 
+timeline.push(gender_identity);
+
+var mus_exp= {
+    type: jsPsychSurveyText,
+    choices: ["1","0"],
+    questions: [{prompt: "Do you have musical experience (e.g. playing an instrument or singing)? Please enter 1 if yes, and 0 if no", name:"mus_exp"}],
+    on_finish: function (data){
+      console.log(data.response)
+      jsPsych.data.addProperties({
+        participant: data.response.mus_exp
+      });
+    }
+  }; 
+timeline.push(mus_exp);
+
+var inst_exp= {
+    type: jsPsychSurveyText,
+    choices: ["1","0"],
+    questions: [{prompt: "Do you (or have you) play an instrument? ? Please enter 1 if yes, and 0 if no", name:"inst_exp"}],
+    on_finish: function (data){
+      console.log(data.response)
+      jsPsych.data.addProperties({
+        participant: data.response.inst_exp
+      });
+    }
+  }; 
+timeline.push(inst_exp);
+
+var years_exp= {
+    type: jsPsychSurveyText,
+    choices: ["1","0","2","3","4","5","6","7","8","9"],
+    questions: [{prompt: "If you do have musical experience, approximately how many years? If you have no experience, please enter 0. ", name:"years_exp"}],
+    on_finish: function (data){
+      console.log(data.response)
+      jsPsych.data.addProperties({
+        participant: data.response.years_exp
+      });
+    }
+  }; 
+timeline.push(years_exp);
+
+var casual_exp= {
+    type: jsPsychSurveyText,
+    choices: ["1","0","2","3","4","5","6","7","8","9"],
+    questions: [{prompt: "How often do you listen to music? (estimate average hours per day)", name:"casual_exp"}],
+    on_finish: function (data){
+      console.log(data.response)
+      jsPsych.data.addProperties({
+        participant: data.response.casual_exp
+      });
+    }
+  }; 
+timeline.push(casual_exp);
 
 var end_exp = {
   type: jsPsychHtmlKeyboardResponse,
