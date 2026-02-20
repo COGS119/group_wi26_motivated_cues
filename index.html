@@ -42,6 +42,7 @@
   });
   //PLEASE KEEP FOR ALL FUTURE ITERATIONS
 
+
   //preloading all images and audio
   var preload = {
     type: jsPsychPreload,
@@ -58,10 +59,6 @@
       'stimuli/pictures/drum_bongo_2.jpg',
       'stimuli/pictures/drum_kit_1.jpg',
       'stimuli/pictures/drum_kit_2.jpg',
-      'stimuli/pictures/guitar_acoustic_1.jpg',
-      'stimuli/pictures/guitar_acoustic_2.jpg',
-      'stimuli/pictures/guitar_electric_1.jpg',
-      'stimuli/pictures/guitar_electric_2.jpg',
       'stimuli/pictures/motor_dirt_1.jpg',
       'stimuli/pictures/motor_dirt_2.jpg',
       'stimuli/pictures/motor_harley_1.jpg',
@@ -69,7 +66,15 @@
       'stimuli/pictures/phone_cell_1.jpg',
       'stimuli/pictures/phone_cell_2.jpg',
       'stimuli/pictures/phone_rotary_1.jpg',
-      'stimuli/pictures/phone_rotary_2.jpg'
+      'stimuli/pictures/phone_rotary_2.jpg',
+      "stimuli/pictures/piano_grand_1.png",
+      "stimuli/pictures/piano_grand_2.jpg",
+      "stimuli/pictures/piano_electric_1.png",
+      "stimuli/pictures/piano_electric_2.jpg",
+      "stimuli/pictures/flute_metal_1.jpg",
+      "stimuli/pictures/flute_metal_2.jpg",
+      "stimuli/pictures/flute_wooden_1.jpg",
+      "stimuli/pictures/flute_wooden_2.jpg",
     ],
     audio: [
       'stimuli/sounds/bird_label_A.wav',
@@ -86,10 +91,6 @@
       'stimuli/sounds/drum_label_B.wav',
       'stimuli/sounds/drum_sound_A.wav',
       'stimuli/sounds/drum_sound_B.wav',
-      'stimuli/sounds/guitar_label_A.wav',
-      'stimuli/sounds/guitar_label_B.wav',
-      'stimuli/sounds/guitar_sound_A.wav',
-      'stimuli/sounds/guitar_sound_B.wav',
       'stimuli/sounds/motor_label_A.wav',
       'stimuli/sounds/motor_label_B.wav',
       'stimuli/sounds/motor_sound_A.wav',
@@ -97,7 +98,16 @@
       'stimuli/sounds/phone_label_A.wav',
       'stimuli/sounds/phone_label_B.wav',
       'stimuli/sounds/phone_sound_A.wav',
-      'stimuli/sounds/phone_sound_B.wav'
+      'stimuli/sounds/phone_sound_B.wav',
+      'stimuli/sounds/piano_sound_A.wav',
+      'stimuli/sounds/piano_sound_B.wav',
+      'stimuli/sounds/flute_sound_A.wav',
+      'stimuli/sounds/flute_sound_B.wav',
+      'stimuli/sounds/piano_label_A.wav',
+      'stimuli/sounds/piano_label_B.wav',
+      'stimuli/sounds/flute_label_A.wav',
+      'stimuli/sounds/flute_label_B.wav',
+
     ]
   };
   timeline.push(preload);
@@ -152,10 +162,6 @@
     "stimuli/pictures/drum_bongo_2.jpg",
     "stimuli/pictures/drum_kit_1.jpg",
     "stimuli/pictures/drum_kit_2.jpg",
-    "stimuli/pictures/guitar_acoustic_1.jpg",
-    "stimuli/pictures/guitar_acoustic_2.jpg",
-    "stimuli/pictures/guitar_electric_1.jpg",
-    "stimuli/pictures/guitar_electric_2.jpg",
     "stimuli/pictures/motor_dirt_1.jpg",
     "stimuli/pictures/motor_dirt_2.jpg",
     "stimuli/pictures/motor_harley_1.jpg",
@@ -163,7 +169,15 @@
     "stimuli/pictures/phone_cell_1.jpg",
     "stimuli/pictures/phone_cell_2.jpg",
     "stimuli/pictures/phone_rotary_1.jpg",
-    "stimuli/pictures/phone_rotary_2.jpg"
+    "stimuli/pictures/phone_rotary_2.jpg",
+    "stimuli/pictures/piano_grand_1.png",
+    "stimuli/pictures/piano_grand_2.jpg",
+    "stimuli/pictures/piano_electric_1.png",
+    "stimuli/pictures/piano_electric_2.jpg",
+    "stimuli/pictures/flute_metal_1.jpg",
+    "stimuli/pictures/flute_metal_2.jpg",
+    "stimuli/pictures/flute_wooden_1.jpg",
+    "stimuli/pictures/flute_wooden_2.jpg",
   ];
   var sounds = [
     "stimuli/sounds/bird_label_A.wav",
@@ -178,10 +192,6 @@
     "stimuli/sounds/drum_label_B.wav",
     "stimuli/sounds/drum_sound_A.wav",
     "stimuli/sounds/drum_sound_B.wav",
-    "stimuli/sounds/guitar_label_A.wav",
-    "stimuli/sounds/guitar_label_B.wav",
-    "stimuli/sounds/guitar_sound_A.wav",
-    "stimuli/sounds/guitar_sound_B.wav",
     "stimuli/sounds/motor_label_A.wav",
     "stimuli/sounds/motor_label_B.wav",
     "stimuli/sounds/motor_sound_A.wav",
@@ -189,74 +199,129 @@
     "stimuli/sounds/phone_label_A.wav",
     "stimuli/sounds/phone_label_B.wav",
     "stimuli/sounds/phone_sound_A.wav",
-    "stimuli/sounds/phone_sound_B.wav"
+    "stimuli/sounds/phone_sound_B.wav",
+    'stimuli/sounds/piano_sound_A.wav',
+    'stimuli/sounds/piano_sound_B.wav',
+    'stimuli/sounds/flute_sound_A.wav',
+    'stimuli/sounds/flute_sound_B.wav',
+    'stimuli/sounds/piano_label_A.wav',
+    'stimuli/sounds/piano_label_B.wav',
+    'stimuli/sounds/flute_label_A.wav',
+    'stimuli/sounds/flute_label_B.wav',
   ];
 
-  // the following creates trials for each image to be matched with each audio file. We need to figure out the 50/50 split.
+  // the following creates trials for each image to be matched with each audio file.
   for (let i = 0; i < pictures.length; i++) {
     for (let j = 0; j < sounds.length; j++) {
       let match = 'no';
       let correct_response = '1';
       let picture = pictures[i];
       let sound = sounds[j];
+      let category = 'undef';
       //BIRD VALID TRIALS
       if (picture.includes("bird") && sound.includes("bird")) {
+        use = '1';
+        category = 'bird';
         if (picture.includes('hawk') && (sound.includes('label') || sound.includes('sound_A'))) {
           match = 'yes';
         }
         else if (picture.includes('song') && (sound.includes('label') || sound.includes('sound_B'))) {
           match = 'yes';
         }
+        else {
+          match = 'no';
+        }
       }
       //DOG VALID TRIALS
       else if (picture.includes("dog") && sound.includes("dog")) {
+        use = '1';
+        category = 'dog'
         if (picture.includes('rott') && (sound.includes('label') || sound.includes('sound_A'))) {
           match = 'yes';
         }
         else if (picture.includes('york') && (sound.includes('label') || sound.includes('sound_B'))) {
           match = 'yes';
         }
+        else {
+          match = 'no';
+        }
       }
       //MOTOR VALID TRIALS
       else if (picture.includes("motor") && sound.includes("motor")) {
+        use = '1';
+        category = 'motorcycle'
         if (picture.includes('dirt') && (sound.includes('label') || sound.includes('sound_A'))) {
           match = 'yes';
         }
         else if (picture.includes('harley') && (sound.includes('label') || sound.includes('sound_B'))) {
           match = 'yes';
         }
+        else {
+          match = 'no';
+        }
       }
       //DRUM VALID TRIALS
       else if (picture.includes("drum") && sound.includes("drum")) {
+        use = '1';
+        category = 'drum'  
         if (picture.includes('bongo') && (sound.includes('label') || sound.includes('sound_B'))) {
           match = 'yes';
         }
         else if (picture.includes('kit') && (sound.includes('label') || sound.includes('sound_A'))) {
           match = 'yes';
         }
+        else {
+          match = 'no';
+        }
       }
-      //GUITAR VALID TRIALS
-      else if (picture.includes("guitar") && sound.includes("guitar")) {
-        if (picture.includes('electric') && (sound.includes('label') || sound.includes('sound_A'))) {
+      //FLUTE VALID TRIALS
+      else if (picture.includes("flute") && sound.includes("flute")) {
+        use = '1';
+        category = 'flute'
+        if (picture.includes('wooden') && (sound.includes('label') || sound.includes('sound_B'))) {
           match = 'yes';
         }
-        else if (picture.includes('acoustic') && (sound.includes('label') || sound.includes('sound_B'))) {
+        else if (picture.includes('metal') && (sound.includes('label') || sound.includes('sound_A'))) {
           match = 'yes';
+        }
+        else {
+          match = 'no';
+        }
+      }
+      //PIANO VALID TRIALS
+      else if (picture.includes("piano") && sound.includes("piano")) {
+        use = '1';
+        category = 'piano'
+        if (picture.includes('grand') && (sound.includes('label') || sound.includes('sound_A'))) {
+          match = 'yes';
+        }
+        else if (picture.includes('electric') && (sound.includes('label') || sound.includes('sound_B'))) {
+          match = 'yes';
+        }
+        else {
+          match = 'no';
+          use = '1';
         }
       }
       //PHONE VALID TRIALS
       else if (picture.includes("phone") && sound.includes("phone")) {
+        use = '1';
+        category = 'phone'
         if (picture.includes('cell') && (sound.includes('label') || sound.includes('sound_A'))) {
           match = 'yes';
         }
         else if (picture.includes('rotary') && (sound.includes('label') || sound.includes('sound_B'))) {
           match = 'yes';
+          use = '1';
+          category = 'phone'
+        }
+        else {
+          match = 'no';
         }
       }
-      //INVALID TRIALS
+      //other invalid trials (not to be used in final balanced verison)
       else {
-        match = 'no';
-        correct_response = '0';
+        use = '0'
       }
       //current trial structure
       var current_trial = {
@@ -264,22 +329,167 @@
         image: picture,
         match: match,
         correct_response: correct_response,
+        use: use,
+        category: category
       };
       //Adding current trial to stimuli list
       all_stimuli.push(current_trial);
     }
   };
 
-  //randomizing order
-  var stim_order_rand = jsPsych.randomization.repeat(all_stimuli, 1);
+///creating balanced invalid trials///////////////////////////////////////////////
+//BIRD Invalid
+var bird_invalid_pics = [
+  "stimuli/pictures/bird_hawk_1.jpg",
+  "stimuli/pictures/bird_hawk_1.jpg",
+  "stimuli/pictures/bird_song_1.jpg",
+  "stimuli/pictures/bird_song_2.jpg",
+]
+var bird_invalid_sounds = [
+  'stimuli/sounds/drum_label_A.wav',
+  "stimuli/sounds/phone_sound_A.wav",
+  'stimuli/sounds/piano_label_B.wav',
+  'stimuli/sounds/flute_sound_B.wav'
+  ]
+for (let i = 0; i < bird_invalid_pics.length; i++) {
+    for (let j = 0; j < bird_invalid_sounds.length; j++) {
+     var current_trial = {
+        category: 'bird',
+        audio: bird_invalid_sounds[j],
+        image: bird_invalid_pics[i],
+        match: 'no',
+        correct_response: '0',
+        use: '1',
+      };
+      //Adding current trial to stimuli list
+      all_stimuli.push(current_trial);
+    }
+};
+//Phone Invalid
+var phone_invalid_pics = [
+   "stimuli/pictures/phone_cell_1.jpg",
+   "stimuli/pictures/phone_cell_2.jpg",
+   "stimuli/pictures/phone_rotary_1.jpg",
+   "stimuli/pictures/phone_rotary_2.jpg",
+];
+var phone_invalid_sounds = [
+'piano_label_A.wav',
+'flute_sound_A.wav',
+'bird_label_B.wav', 
+'drum_sound_B.wav'
+];
 
-  //separating trials by validity
-  var valid_trials = stim_order_rand.filter(t => t.correct_response === '1');
-  var invalid_trials = stim_order_rand.filter(t => t.correct_response === '0').slice(0, 96);
+for (let i = 0; i < phone_invalid_pics.length; i++) {
+    for (let j = 0; j < phone_invalid_sounds.length; j++) {
+     var current_trial = {
+        category: 'phone',
+        audio: phone_invalid_sounds[j],
+        image: phone_invalid_pics[i],
+        match: 'no',
+        correct_response: '0',
+        use: '1',
+      };
+      //Adding current trial to stimuli list
+      all_stimuli.push(current_trial);
+    }
+};
+//Piano Invalid
+var piano_invalid_pics = [
+   "stimuli/pictures/piano_grand_1.png",
+   "stimuli/pictures/piano_grand_2.jpg",
+   "stimuli/pictures/piano_electric_1.png",
+   "stimuli/pictures/piano_electric_2.jpg",
+];
+var piano_invalid_sounds = [
+  'flute_label_A.wav',
+  'bird_sound_A.wav',
+  'drum_label_B.wav',
+  'phone_sound_B.wav'
+];
+for (let i = 0; i < piano_invalid_pics.length; i++) {
+    for (let j = 0; j < piano_invalid_sounds.length; j++) {
+     var current_trial = {
+        category: 'piano',
+        audio: piano_invalid_sounds[j],
+        image: piano_invalid_pics[i],
+        match: 'no',
+        correct_response: '0',
+        use: '1',
+      };
+      //Adding current trial to stimuli list
+      all_stimuli.push(current_trial);
+    }
+};
+//Drum invalid
+var drum_invalid_pics = [
+   "stimuli/pictures/drum_bongo_1.jpg",
+   "stimuli/pictures/drum_bongo_2.jpg",
+   "stimuli/pictures/drum_kit_1.jpg",
+   "stimuli/pictures/drum_kit_2.jpg",
+];
+var drum_invalid_sounds = [
+  'phone_label_A.wav',
+  'piano_sound_A.wav',
+  'flute_label_B.wav',
+  'bird_sound_B.wav'
+  ];
+for (let i = 0; i < drum_invalid_pics.length; i++) {
+    for (let j = 0; j < drum_invalid_sounds.length; j++) {
+     var current_trial = {
+        category: 'drum',
+        audio: drum_invalid_sounds[j],
+        image: drum_invalid_pics[i],
+        match: 'no',
+        correct_response: '0',
+        use: '1',
+      };
+      //Adding current trial to stimuli list
+      all_stimuli.push(current_trial);
+    }
+};
+
+var flute_invalid_pics = [
+  "stimuli/pictures/flute_metal_1.jpg",
+  "stimuli/pictures/flute_metal_2.jpg",
+  "stimuli/pictures/flute_wooden_1.jpg",
+  "stimuli/pictures/flute_wooden_2.jpg",
+];
+var flute_invalid_sounds = [
+  'bird_label_A.wav',
+  'drum_sound_A.wav',
+  'phone_label_B.wav',
+  'piano_sound_B.wav'
+  ];
+for (let i = 0; i < flute_invalid_pics.length; i++) {
+    for (let j = 0; j < flute_invalid_sounds.length; j++) {
+     var current_trial = {
+        category: 'flute',
+        audio: flute_invalid_sounds.length[j],
+        image: flute_invalid_pics[i],
+        match: 'no',
+        correct_response: '0',
+        use: '1',
+      };
+      //Adding current trial to stimuli list
+      all_stimuli.push(current_trial);
+    }
+};
+//////////////////////////////////////////////////////////////////////////////////////////
+
+//getting only our balanced stims
+var all_stimuli_filtered = all_stimuli.filter(t => t.use === '1');
+
+//randomizing order
+var stim_order_rand = jsPsych.randomization.repeat(all_stimuli_filtered, 1);
+
+
+//separating trials by validity
+var valid_trials = stim_order_rand.filter(t => t.correct_response === '1');
+var invalid_trials = stim_order_rand.filter(t => t.correct_response === '0');
 
   //making final stimuli with 50/50 split
-  var relevant_stimuli = valid_trials.concat(invalid_trials);
-  var final_stimuli = jsPsych.randomization.repeat(relevant_stimuli, 1);
+var relevant_stimuli = valid_trials.concat(invalid_trials);
+var final_stimuli = jsPsych.randomization.repeat(relevant_stimuli, 1);
 
 var block1 = final_stimuli.slice(0,24);
 var block2 = final_stimuli.slice(24,48);
