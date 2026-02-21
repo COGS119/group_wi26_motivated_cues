@@ -373,10 +373,10 @@ var phone_invalid_pics = [
    "stimuli/pictures/phone_rotary_2.jpg",
 ];
 var phone_invalid_sounds = [
-'piano_label_A.wav',
-'flute_sound_A.wav',
-'bird_label_B.wav', 
-'drum_sound_B.wav'
+'stimuli/sounds/piano_label_A.wav',
+'stimuli/sounds/flute_sound_A.wav',
+'stimuli/sounds/bird_label_B.wav', 
+'stimuli/sounds/drum_sound_B.wav'
 ];
 
 for (let i = 0; i < phone_invalid_pics.length; i++) {
@@ -401,10 +401,10 @@ var piano_invalid_pics = [
    "stimuli/pictures/piano_electric_2.jpg",
 ];
 var piano_invalid_sounds = [
-  'flute_label_A.wav',
-  'bird_sound_A.wav',
-  'drum_label_B.wav',
-  'phone_sound_B.wav'
+  'stimuli/sounds/flute_label_A.wav',
+  'stimuli/sounds/bird_sound_A.wav',
+  'stimuli/sounds/drum_label_B.wav',
+  'stimuli/sounds/phone_sound_B.wav'
 ];
 for (let i = 0; i < piano_invalid_pics.length; i++) {
     for (let j = 0; j < piano_invalid_sounds.length; j++) {
@@ -428,10 +428,10 @@ var drum_invalid_pics = [
    "stimuli/pictures/drum_kit_2.jpg",
 ];
 var drum_invalid_sounds = [
-  'phone_label_A.wav',
-  'piano_sound_A.wav',
-  'flute_label_B.wav',
-  'bird_sound_B.wav'
+  'stimuli/sounds/phone_label_A.wav',
+  'stimuli/sounds/piano_sound_A.wav',
+  'stimuli/sounds/flute_label_B.wav',
+  'stimuli/sounds/bird_sound_B.wav'
   ];
 for (let i = 0; i < drum_invalid_pics.length; i++) {
     for (let j = 0; j < drum_invalid_sounds.length; j++) {
@@ -455,16 +455,16 @@ var flute_invalid_pics = [
   "stimuli/pictures/flute_wooden_2.jpg",
 ];
 var flute_invalid_sounds = [
-  'bird_label_A.wav',
-  'drum_sound_A.wav',
-  'phone_label_B.wav',
-  'piano_sound_B.wav'
+  'stimuli/sounds/bird_label_A.wav',
+  'stimuli/sounds/drum_sound_A.wav',
+  'stimuli/sounds/phone_label_B.wav',
+  'stimuli/sounds/piano_sound_B.wav'
   ];
 for (let i = 0; i < flute_invalid_pics.length; i++) {
     for (let j = 0; j < flute_invalid_sounds.length; j++) {
      var current_trial = {
         category: 'flute',
-        audio: flute_invalid_sounds.length[j],
+        audio: flute_invalid_sounds[j],
         image: flute_invalid_pics[i],
         match: 'no',
         correct_response: '0',
