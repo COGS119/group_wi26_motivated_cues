@@ -12,6 +12,8 @@
   <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@2.0.0"></script>
   <script src="https://unpkg.com/@jspsych/plugin-image-keyboard-response@2.0.0"></script>
   <script src="https://unpkg.com/@jspsych/plugin-image-keyboard-response@2.0.0"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-survey-multi-choice@1.1.3"></script>
+  
   <!-- This is for data storage - please be sure to keep this script in all future updates to the code!! -->
   <script src="https://unpkg.com/@jspsych-contrib/plugin-pipe"></script>
 </head>
@@ -75,6 +77,18 @@
       "stimuli/pictures/flute_metal_2.jpg",
       "stimuli/pictures/flute_wooden_1.jpg",
       "stimuli/pictures/flute_wooden_2.jpg",
+      "stimuli/pictures/cough_man_1.jpg",
+      "stimuli/pictures/cough_man_2.jpg", 
+      "stimuli/pictures/cough_wom_1.jpg",
+      "stimuli/pictures/cough_wom_2.jpg",
+      "stimuli/pictures/drop_multi_1.jpg", 
+      "stimuli/pictures/drop_multi_2.jpg", 
+      "stimuli/pictures/drop_single_1.jpg",
+      "stimuli/pictures/drop_single_2.jpg",
+      "stimuli/pictures/hiccup_man_1.jpg",
+      "stimuli/pictures/hiccup_man_2.jpg",
+      "stimuli/pictures/hiccup_wom_1.jpg", 
+      "stimuli/pictures/hiccup_wom_2.jpg"
     ],
     audio: [
       'stimuli/sounds/bird_label_A.wav',
@@ -107,7 +121,18 @@
       'stimuli/sounds/piano_label_B.wav',
       'stimuli/sounds/flute_label_A.wav',
       'stimuli/sounds/flute_label_B.wav',
-
+      'stimuli/sounds/cough_label_A.wav',
+      'stimuli/sounds/cough_label_B.wav',
+      'stimuli/sounds/cough_sound_A.wav',
+      'stimuli/sounds/cough_sound_B.wav',
+      'stimuli/sounds/drop_label_A.wav',
+      'stimuli/sounds/drop_label_B.wav',
+      'stimuli/sounds/drop_sound_A.wav',
+      'stimuli/sounds/drop_sound_B.wav',
+      'stimuli/sounds/hiccup_label_A.wav',
+      'stimuli/sounds/hiccup_label_B.wav',
+      'stimuli/sounds/hiccup_sound_A.wav',
+      'stimuli/sounds/hiccup_sound_B.wav'
     ]
   };
   timeline.push(preload);
@@ -132,6 +157,12 @@
   };
   timeline.push(participant_id_entry);
 
+  var conditions = ['ono', 'mus'];
+  var condition_assignment = jsPsych.randomization.sampleWithoutReplacement(conditions, 1)[0];
+  jsPsych.data.addProperties({
+    condition: condition_assignment
+    });
+
   //adding instructions. Key pressing instructions occur here (remove from each trial individually) 
   //Add reminder at start of each block?
   var instructions = {
@@ -154,18 +185,10 @@
     "stimuli/pictures/bird_hawk_1.jpg",
     "stimuli/pictures/bird_song_1.jpg",
     "stimuli/pictures/bird_song_2.jpg",
-    "stimuli/pictures/dog_rott_1.jpg",
-    "stimuli/pictures/dog_rott_2.jpg",
-    "stimuli/pictures/dog_york_1.jpg",
-    "stimuli/pictures/dog_york_2.jpg",
     "stimuli/pictures/drum_bongo_1.jpg",
     "stimuli/pictures/drum_bongo_2.jpg",
     "stimuli/pictures/drum_kit_1.jpg",
     "stimuli/pictures/drum_kit_2.jpg",
-    "stimuli/pictures/motor_dirt_1.jpg",
-    "stimuli/pictures/motor_dirt_2.jpg",
-    "stimuli/pictures/motor_harley_1.jpg",
-    "stimuli/pictures/motor_harley_2.jpg",
     "stimuli/pictures/phone_cell_1.jpg",
     "stimuli/pictures/phone_cell_2.jpg",
     "stimuli/pictures/phone_rotary_1.jpg",
@@ -184,18 +207,10 @@
     "stimuli/sounds/bird_label_B.wav",
     "stimuli/sounds/bird_sound_A.wav",
     "stimuli/sounds/bird_sound_B.wav",
-    "stimuli/sounds/dog_label_A.wav",
-    "stimuli/sounds/dog_label_B.wav",
-    "stimuli/sounds/dog_sound_A.wav",
-    "stimuli/sounds/dog_sound_B.wav",
     "stimuli/sounds/drum_label_A.wav",
     "stimuli/sounds/drum_label_B.wav",
     "stimuli/sounds/drum_sound_A.wav",
     "stimuli/sounds/drum_sound_B.wav",
-    "stimuli/sounds/motor_label_A.wav",
-    "stimuli/sounds/motor_label_B.wav",
-    "stimuli/sounds/motor_sound_A.wav",
-    "stimuli/sounds/motor_sound_B.wav",
     "stimuli/sounds/phone_label_A.wav",
     "stimuli/sounds/phone_label_B.wav",
     "stimuli/sounds/phone_sound_A.wav",
@@ -211,270 +226,629 @@
   ];
 
   // the following creates trials for each image to be matched with each audio file.
-  for (let i = 0; i < pictures.length; i++) {
-    for (let j = 0; j < sounds.length; j++) {
-      let match = 'no';
-      let correct_response = '1';
-      let picture = pictures[i];
-      let sound = sounds[j];
-      let category = 'undef';
-      //BIRD VALID TRIALS
-      if (picture.includes("bird") && sound.includes("bird")) {
-        use = '1';
-        category = 'bird';
-        if (picture.includes('hawk') && (sound.includes('label') || sound.includes('sound_A'))) {
-          match = 'yes';
-        }
-        else if (picture.includes('song') && (sound.includes('label') || sound.includes('sound_B'))) {
-          match = 'yes';
-        }
-        else {
-          match = 'no';
-        }
-      }
-      //DOG VALID TRIALS
-      else if (picture.includes("dog") && sound.includes("dog")) {
-        use = '1';
-        category = 'dog'
-        if (picture.includes('rott') && (sound.includes('label') || sound.includes('sound_A'))) {
-          match = 'yes';
-        }
-        else if (picture.includes('york') && (sound.includes('label') || sound.includes('sound_B'))) {
-          match = 'yes';
-        }
-        else {
-          match = 'no';
-        }
-      }
-      //MOTOR VALID TRIALS
-      else if (picture.includes("motor") && sound.includes("motor")) {
-        use = '1';
-        category = 'motorcycle'
-        if (picture.includes('dirt') && (sound.includes('label') || sound.includes('sound_A'))) {
-          match = 'yes';
-        }
-        else if (picture.includes('harley') && (sound.includes('label') || sound.includes('sound_B'))) {
-          match = 'yes';
-        }
-        else {
-          match = 'no';
-        }
-      }
-      //DRUM VALID TRIALS
-      else if (picture.includes("drum") && sound.includes("drum")) {
-        use = '1';
-        category = 'drum'  
-        if (picture.includes('bongo') && (sound.includes('label') || sound.includes('sound_B'))) {
-          match = 'yes';
-        }
-        else if (picture.includes('kit') && (sound.includes('label') || sound.includes('sound_A'))) {
-          match = 'yes';
-        }
-        else {
-          match = 'no';
-        }
-      }
-      //FLUTE VALID TRIALS
-      else if (picture.includes("flute") && sound.includes("flute")) {
-        use = '1';
-        category = 'flute'
-        if (picture.includes('wooden') && (sound.includes('label') || sound.includes('sound_B'))) {
-          match = 'yes';
-        }
-        else if (picture.includes('metal') && (sound.includes('label') || sound.includes('sound_A'))) {
-          match = 'yes';
-        }
-        else {
-          match = 'no';
-        }
-      }
-      //PIANO VALID TRIALS
-      else if (picture.includes("piano") && sound.includes("piano")) {
-        use = '1';
-        category = 'piano'
-        if (picture.includes('grand') && (sound.includes('label') || sound.includes('sound_A'))) {
-          match = 'yes';
-        }
-        else if (picture.includes('electric') && (sound.includes('label') || sound.includes('sound_B'))) {
-          match = 'yes';
-        }
-        else {
-          match = 'no';
+if (condition_assignment == 'mus'){
+    for (let i = 0; i < pictures.length; i++) {
+      for (let j = 0; j < sounds.length; j++) {
+        let congruent = 'no';
+        let correct_response = '1';
+        let picture = pictures[i];
+        let sound = sounds[j];
+        let category = 'undef';
+        let sound_type = '';
+        //BIRD VALID TRIALS
+        if (picture.includes("bird") && sound.includes("bird")) {
           use = '1';
+          category = 'bird';
+          if (picture.includes('hawk') && (sound.includes('label') || sound.includes('sound_A'))) {
+            congruent = 'yes';
+          }
+          else if (picture.includes('song') && (sound.includes('label') || sound.includes('sound_B'))) {
+            congruent = 'yes';
+          }
+          else {
+            congruent = 'no';
+          }
         }
-      }
-      //PHONE VALID TRIALS
-      else if (picture.includes("phone") && sound.includes("phone")) {
-        use = '1';
-        category = 'phone'
-        if (picture.includes('cell') && (sound.includes('label') || sound.includes('sound_A'))) {
-          match = 'yes';
+        //DOG VALID TRIALS
+        else if (picture.includes("dog") && sound.includes("dog")) {
+          use = '1';
+          category = 'dog'
+          if (picture.includes('rott') && (sound.includes('label') || sound.includes('sound_A'))) {
+            congruent = 'yes';
+          }
+          else if (picture.includes('york') && (sound.includes('label') || sound.includes('sound_B'))) {
+            congruent = 'yes';
+          }
+          else {
+            congruent = 'no';
+          }
         }
-        else if (picture.includes('rotary') && (sound.includes('label') || sound.includes('sound_B'))) {
-          match = 'yes';
+        //MOTOR VALID TRIALS
+        else if (picture.includes("motor") && sound.includes("motor")) {
+          use = '1';
+          category = 'motorcycle'
+          if (picture.includes('dirt') && (sound.includes('label') || sound.includes('sound_A'))) {
+            congruent = 'yes';
+          }
+          else if (picture.includes('harley') && (sound.includes('label') || sound.includes('sound_B'))) {
+            congruent = 'yes';
+          }
+          else {
+            congruent = 'no';
+          }
+        }
+        //DRUM VALID TRIALS
+        else if (picture.includes("drum") && sound.includes("drum")) {
+          use = '1';
+          category = 'drum'  
+          if (picture.includes('bongo') && (sound.includes('label') || sound.includes('sound_B'))) {
+            congruent = 'yes';
+          }
+          else if (picture.includes('kit') && (sound.includes('label') || sound.includes('sound_A'))) {
+            congruent = 'yes';
+          }
+          else {
+            congruent = 'no';
+          }
+        }
+        //FLUTE VALID TRIALS
+        else if (picture.includes("flute") && sound.includes("flute")) {
+          use = '1';
+          category = 'flute'
+          if (picture.includes('wooden') && (sound.includes('label') || sound.includes('sound_B'))) {
+            congruent = 'yes';
+          }
+          else if (picture.includes('metal') && (sound.includes('label') || sound.includes('sound_A'))) {
+            congruent = 'yes';
+          }
+          else {
+            congruent = 'no';
+          }
+        }
+        //PIANO VALID TRIALS
+        else if (picture.includes("piano") && sound.includes("piano")) {
+          use = '1';
+          category = 'piano'
+          if (picture.includes('grand') && (sound.includes('label') || sound.includes('sound_A'))) {
+            congruent = 'yes';
+          }
+          else if (picture.includes('electric') && (sound.includes('label') || sound.includes('sound_B'))) {
+            congruent = 'yes';
+          }
+          else {
+            congruent = 'no';
+            use = '1';
+          }
+        }
+        //PHONE VALID TRIALS
+        else if (picture.includes("phone") && sound.includes("phone")) {
           use = '1';
           category = 'phone'
+          if (picture.includes('cell') && (sound.includes('label') || sound.includes('sound_A'))) {
+            congruent = 'yes';
+          }
+          else if (picture.includes('rotary') && (sound.includes('label') || sound.includes('sound_B'))) {
+            congruent = 'yes';
+            use = '1';
+            category = 'phone'
+          }
+          else {
+            congruent = 'no';
+          }
         }
+        //other invalid trials (not to be used in final balanced verison)
         else {
-          match = 'no';
+          use = '0'
         }
+        //current trial structure
+        var current_trial = {
+          audio: sound,
+          image: picture,
+          congruent: congruent,
+          correct_response: correct_response,
+          use: use,
+          category: category,
+          sound_type: sound.includes("sound")
+          ? "sound"
+          : sound.includes("label")
+            ? "label"
+            : null
+        };
+        //Adding current trial to stimuli list
+        all_stimuli.push(current_trial);
       }
-      //other invalid trials (not to be used in final balanced verison)
-      else {
-        use = '0'
-      }
-      //current trial structure
+    };
+
+  ///creating balanced invalid trials///////////////////////////////////////////////
+  //BIRD Invalid
+  var bird_invalid_pics = [
+    "stimuli/pictures/bird_hawk_1.jpg",
+    "stimuli/pictures/bird_hawk_1.jpg",
+    "stimuli/pictures/bird_song_1.jpg",
+    "stimuli/pictures/bird_song_2.jpg",
+  ]
+  var bird_invalid_sounds = [
+    'stimuli/sounds/drum_label_A.wav',
+    "stimuli/sounds/phone_sound_A.wav",
+    'stimuli/sounds/piano_label_B.wav',
+    'stimuli/sounds/flute_sound_B.wav'
+    ]
+  for (let i = 0; i < bird_invalid_pics.length; i++) {
+      for (let j = 0; j < bird_invalid_sounds.length; j++) {
+        let sound_type = '';
       var current_trial = {
-        audio: sound,
-        image: picture,
-        match: match,
-        correct_response: correct_response,
-        use: use,
-        category: category
-      };
-      //Adding current trial to stimuli list
-      all_stimuli.push(current_trial);
-    }
+          category: 'bird',
+          audio: bird_invalid_sounds[j],
+          image: bird_invalid_pics[i],
+          congruent: 'no',
+          correct_response: '0',
+          use: '1',
+          sound_type: bird_invalid_sounds[j].includes("sound")
+          ? "sound"
+          : bird_invalid_sounds[j].includes("label")
+            ? "label"
+            : null
+        };
+        //Adding current trial to stimuli list
+        all_stimuli.push(current_trial);
+      }
+  };
+  //Phone Invalid
+  var phone_invalid_pics = [
+    "stimuli/pictures/phone_cell_1.jpg",
+    "stimuli/pictures/phone_cell_2.jpg",
+    "stimuli/pictures/phone_rotary_1.jpg",
+    "stimuli/pictures/phone_rotary_2.jpg",
+  ];
+  var phone_invalid_sounds = [
+  'stimuli/sounds/piano_label_A.wav',
+  'stimuli/sounds/flute_sound_A.wav',
+  'stimuli/sounds/bird_label_B.wav', 
+  'stimuli/sounds/drum_sound_B.wav'
+  ];
+
+  for (let i = 0; i < phone_invalid_pics.length; i++) {
+      for (let j = 0; j < phone_invalid_sounds.length; j++) {
+        let sound_type = '';
+      var current_trial = {
+          category: 'phone',
+          audio: phone_invalid_sounds[j],
+          image: phone_invalid_pics[i],
+          congruent: 'no',
+          correct_response: '0',
+          use: '1',
+          sound_type: phone_invalid_sounds[j].includes("sound")
+          ? "sound"
+          : phone_invalid_sounds[j].includes("label")
+            ? "label"
+            : null
+        };
+        //Adding current trial to stimuli list
+        all_stimuli.push(current_trial);
+      }
+  };
+  //Piano Invalid
+  var piano_invalid_pics = [
+    "stimuli/pictures/piano_grand_1.jpg",
+    "stimuli/pictures/piano_grand_2.jpg",
+    "stimuli/pictures/piano_electric_1.jpg",
+    "stimuli/pictures/piano_electric_2.jpg",
+  ];
+  var piano_invalid_sounds = [
+    'stimuli/sounds/flute_label_A.wav',
+    'stimuli/sounds/bird_sound_A.wav',
+    'stimuli/sounds/drum_label_B.wav',
+    'stimuli/sounds/phone_sound_B.wav'
+  ];
+  for (let i = 0; i < piano_invalid_pics.length; i++) {
+      for (let j = 0; j < piano_invalid_sounds.length; j++) {
+        let sound_type = '';
+      var current_trial = {
+          category: 'piano',
+          audio: piano_invalid_sounds[j],
+          image: piano_invalid_pics[i],
+          congruent: 'no',
+          correct_response: '0',
+          use: '1',
+          sound_type: piano_invalid_sounds[j].includes("sound")
+          ? "sound"
+          : piano_invalid_sounds[j].includes("label")
+            ? "label"
+            : null
+        };
+        //Adding current trial to stimuli list
+        all_stimuli.push(current_trial);
+      }
+  };
+  //Drum invalid
+  var drum_invalid_pics = [
+    "stimuli/pictures/drum_bongo_1.jpg",
+    "stimuli/pictures/drum_bongo_2.jpg",
+    "stimuli/pictures/drum_kit_1.jpg",
+    "stimuli/pictures/drum_kit_2.jpg",
+  ];
+  var drum_invalid_sounds = [
+    'stimuli/sounds/phone_label_A.wav',
+    'stimuli/sounds/piano_sound_A.wav',
+    'stimuli/sounds/flute_label_B.wav',
+    'stimuli/sounds/bird_sound_B.wav'
+    ];
+  for (let i = 0; i < drum_invalid_pics.length; i++) {
+      for (let j = 0; j < drum_invalid_sounds.length; j++) {
+        let sound_type = '';
+      var current_trial = {
+          category: 'drum',
+          audio: drum_invalid_sounds[j],
+          image: drum_invalid_pics[i],
+          congruent: 'no',
+          correct_response: '0',
+          use: '1',
+          sound_type: drum_invalid_sounds[j].includes("sound")
+          ? "sound"
+          : drum_invalid_sounds[j].includes("label")
+            ? "label"
+            : null
+        };
+        //Adding current trial to stimuli list
+        all_stimuli.push(current_trial);
+      }
   };
 
-///creating balanced invalid trials///////////////////////////////////////////////
-//BIRD Invalid
-var bird_invalid_pics = [
-  "stimuli/pictures/bird_hawk_1.jpg",
-  "stimuli/pictures/bird_hawk_1.jpg",
-  "stimuli/pictures/bird_song_1.jpg",
-  "stimuli/pictures/bird_song_2.jpg",
-]
-var bird_invalid_sounds = [
-  'stimuli/sounds/drum_label_A.wav',
-  "stimuli/sounds/phone_sound_A.wav",
-  'stimuli/sounds/piano_label_B.wav',
-  'stimuli/sounds/flute_sound_B.wav'
-  ]
-for (let i = 0; i < bird_invalid_pics.length; i++) {
-    for (let j = 0; j < bird_invalid_sounds.length; j++) {
-     var current_trial = {
-        category: 'bird',
-        audio: bird_invalid_sounds[j],
-        image: bird_invalid_pics[i],
-        match: 'no',
-        correct_response: '0',
-        use: '1',
-      };
-      //Adding current trial to stimuli list
-      all_stimuli.push(current_trial);
-    }
-};
-//Phone Invalid
-var phone_invalid_pics = [
-   "stimuli/pictures/phone_cell_1.jpg",
-   "stimuli/pictures/phone_cell_2.jpg",
-   "stimuli/pictures/phone_rotary_1.jpg",
-   "stimuli/pictures/phone_rotary_2.jpg",
-];
-var phone_invalid_sounds = [
-'stimuli/sounds/piano_label_A.wav',
-'stimuli/sounds/flute_sound_A.wav',
-'stimuli/sounds/bird_label_B.wav', 
-'stimuli/sounds/drum_sound_B.wav'
-];
-
-for (let i = 0; i < phone_invalid_pics.length; i++) {
-    for (let j = 0; j < phone_invalid_sounds.length; j++) {
-     var current_trial = {
-        category: 'phone',
-        audio: phone_invalid_sounds[j],
-        image: phone_invalid_pics[i],
-        match: 'no',
-        correct_response: '0',
-        use: '1',
-      };
-      //Adding current trial to stimuli list
-      all_stimuli.push(current_trial);
-    }
-};
-//Piano Invalid
-var piano_invalid_pics = [
-   "stimuli/pictures/piano_grand_1.jpg",
-   "stimuli/pictures/piano_grand_2.jpg",
-   "stimuli/pictures/piano_electric_1.jpg",
-   "stimuli/pictures/piano_electric_2.jpg",
-];
-var piano_invalid_sounds = [
-  'stimuli/sounds/flute_label_A.wav',
-  'stimuli/sounds/bird_sound_A.wav',
-  'stimuli/sounds/drum_label_B.wav',
-  'stimuli/sounds/phone_sound_B.wav'
-];
-for (let i = 0; i < piano_invalid_pics.length; i++) {
-    for (let j = 0; j < piano_invalid_sounds.length; j++) {
-     var current_trial = {
-        category: 'piano',
-        audio: piano_invalid_sounds[j],
-        image: piano_invalid_pics[i],
-        match: 'no',
-        correct_response: '0',
-        use: '1',
-      };
-      //Adding current trial to stimuli list
-      all_stimuli.push(current_trial);
-    }
-};
-//Drum invalid
-var drum_invalid_pics = [
-   "stimuli/pictures/drum_bongo_1.jpg",
-   "stimuli/pictures/drum_bongo_2.jpg",
-   "stimuli/pictures/drum_kit_1.jpg",
-   "stimuli/pictures/drum_kit_2.jpg",
-];
-var drum_invalid_sounds = [
-  'stimuli/sounds/phone_label_A.wav',
-  'stimuli/sounds/piano_sound_A.wav',
-  'stimuli/sounds/flute_label_B.wav',
-  'stimuli/sounds/bird_sound_B.wav'
+  var flute_invalid_pics = [
+    "stimuli/pictures/flute_metal_1.jpg",
+    "stimuli/pictures/flute_metal_2.jpg",
+    "stimuli/pictures/flute_wooden_1.jpg",
+    "stimuli/pictures/flute_wooden_2.jpg",
   ];
-for (let i = 0; i < drum_invalid_pics.length; i++) {
-    for (let j = 0; j < drum_invalid_sounds.length; j++) {
-     var current_trial = {
-        category: 'drum',
-        audio: drum_invalid_sounds[j],
-        image: drum_invalid_pics[i],
-        match: 'no',
-        correct_response: '0',
-        use: '1',
-      };
-      //Adding current trial to stimuli list
-      all_stimuli.push(current_trial);
-    }
-};
-
-var flute_invalid_pics = [
-  "stimuli/pictures/flute_metal_1.jpg",
-  "stimuli/pictures/flute_metal_2.jpg",
-  "stimuli/pictures/flute_wooden_1.jpg",
-  "stimuli/pictures/flute_wooden_2.jpg",
-];
-var flute_invalid_sounds = [
-  'stimuli/sounds/bird_label_A.wav',
-  'stimuli/sounds/drum_sound_A.wav',
-  'stimuli/sounds/phone_label_B.wav',
-  'stimuli/sounds/piano_sound_B.wav'
+  var flute_invalid_sounds = [
+    'stimuli/sounds/bird_label_A.wav',
+    'stimuli/sounds/drum_sound_A.wav',
+    'stimuli/sounds/phone_label_B.wav',
+    'stimuli/sounds/piano_sound_B.wav'
+    ];
+  for (let i = 0; i < flute_invalid_pics.length; i++) {
+      for (let j = 0; j < flute_invalid_sounds.length; j++) {
+      let sound_type = '';
+      var current_trial = {
+          category: 'flute',
+          audio: flute_invalid_sounds[j],
+          image: flute_invalid_pics[i],
+          congruent: 'no',
+          correct_response: '0',
+          use: '1',
+          sound_type: flute_invalid_sounds[j].includes("sound")
+          ? "sound"
+          : flute_invalid_sounds[j].includes("label")
+            ? "label"
+            : null
+        };
+        //Adding current trial to stimuli list
+        all_stimuli.push(current_trial);
+      }
+  };
+}
+////////////////// CONDITION 2 TRIALS //////////////////////////////////////////////////////////////////////////////////////////////
+else if (condition_assignment == 'ono'){
+  var onosounds = [
+  'stimuli/sounds/bleep.wav',
+  'stimuli/sounds/buzz.wav',
+  'stimuli/sounds/cough_label_A.wav',
+  'stimuli/sounds/cough_label_B.wav',
+  'stimuli/sounds/cough_sound_A.wav',
+  'stimuli/sounds/cough_sound_B.wav',
+  'stimuli/sounds/dog_label_A.wav',
+  'stimuli/sounds/dog_label_B.wav',
+  'stimuli/sounds/dog_sound_A.wav',
+  'stimuli/sounds/dog_sound_B.wav',
+  'stimuli/sounds/drop_label_A.wav',
+  'stimuli/sounds/drop_label_B.wav',
+  'stimuli/sounds/drop_sound_A.wav',
+  'stimuli/sounds/drop_sound_B.wav',
+  'stimuli/sounds/hiccup_label_A.wav',
+  'stimuli/sounds/hiccup_label_B.wav',
+  'stimuli/sounds/hiccup_sound_A.wav',
+  'stimuli/sounds/hiccup_sound_B.wav',
+  'stimuli/sounds/motor_label_A.wav',
+  'stimuli/sounds/motor_label_B.wav',
+  'stimuli/sounds/motor_sound_A.wav',
+  'stimuli/sounds/motor_sound_B.wav',
   ];
-for (let i = 0; i < flute_invalid_pics.length; i++) {
-    for (let j = 0; j < flute_invalid_sounds.length; j++) {
+  var onopictures = [
+  "stimuli/pictures/dog_rott_1.jpg",
+  "stimuli/pictures/dog_rott_2.jpg",
+  "stimuli/pictures/dog_york_1.jpg",
+  "stimuli/pictures/dog_york_2.jpg",
+  "stimuli/pictures/motor_dirt_1.jpg",
+  "stimuli/pictures/motor_dirt_2.jpg",
+  "stimuli/pictures/motor_harley_1.jpg",
+  "stimuli/pictures/motor_harley_2.jpg",
+  "stimuli/pictures/cough_man_1.jpg",
+  "stimuli/pictures/cough_man_2.jpg", 
+  "stimuli/pictures/cough_wom_1.jpg",
+  "stimuli/pictures/cough_wom_2.jpg",
+  "stimuli/pictures/drop_multi_1.jpg", 
+  "stimuli/pictures/drop_multi_2.jpg", 
+  "stimuli/pictures/drop_single_1.jpg",
+  "stimuli/pictures/drop_single_2.jpg",
+  "stimuli/pictures/hiccup_man_1.jpg",
+  "stimuli/pictures/hiccup_man_2.jpg",
+  "stimuli/pictures/hiccup_wom_1.jpg", 
+  "stimuli/pictures/hiccup_wom_2.jpg"
+];
+for (let i = 0; i < onopictures.length; i++) {
+     for (let j = 0; j < onosounds.length; j++) {
+       let congruent = 'no';
+       let correct_response = '1';
+       let picture = onopictures[i];
+       let sound = onosounds[j];
+       let category = 'undef';
+       let sound_type = '';
+       //DOG VALID TRIALS
+      if (picture.includes("dog") && sound.includes("dog")) {
+         use = '1';
+         category = 'dog'
+         if (picture.includes('rott') && (sound.includes('label') || sound.includes('sound_A'))) {
+           congruent = 'yes';
+         }
+         else if (picture.includes('york') && (sound.includes('label') || sound.includes('sound_B'))) {
+           congruent = 'yes';
+         }
+         else {
+           congruent = 'no';
+         }
+       }
+       //MOTOR VALID TRIALS
+       else if (picture.includes("motor") && sound.includes("motor")) {
+         use = '1';
+         category = 'motorcycle'
+         if (picture.includes('dirt') && (sound.includes('label') || sound.includes('sound_A'))) {
+           congruent = 'yes';
+         }
+         else if (picture.includes('harley') && (sound.includes('label') || sound.includes('sound_B'))) {
+           congruent = 'yes';
+         }
+         else {
+           congruent = 'no';
+         }
+       }
+       //drop VALID TRIALS
+       else if (picture.includes("drop") && sound.includes("drop")) {
+         use = '1';
+         category = 'drop'
+         if (picture.includes('multi') && (sound.includes('label') || sound.includes('sound_B'))) {
+           congruent = 'yes';
+         }
+         else if (picture.includes('single') && (sound.includes('label') || sound.includes('sound_A'))) {
+           congruent = 'yes';
+         }
+         else {
+           congruent = 'no';
+         }
+       }
+       //hiccup VALID TRIALS
+       else if (picture.includes("hiccup") && sound.includes("hiccup")) {
+         use = '1';
+         category = 'hiccup'
+         if (picture.includes('wom') && (sound.includes('label') || sound.includes('sound_A'))) {
+           congruent = 'yes';
+         }
+         else if (picture.includes('man') && (sound.includes('label') || sound.includes('sound_B'))) {
+           congruent = 'yes';
+         }
+         else {
+           congruent = 'no';
+           use = '1';
+         }
+       }
+       //cough VALID TRIALS
+       else if (picture.includes("cough") && sound.includes("cough")) {
+         use = '1';
+         category = 'cough'
+         if (picture.includes('wom') && (sound.includes('label') || sound.includes('sound_A'))) {
+           congruent = 'yes';
+         }
+         else if (picture.includes('man') && (sound.includes('label') || sound.includes('sound_B'))) {
+           congruent = 'yes';
+           use = '1';
+           category = 'cough'
+         }
+         else {
+           congruent = 'no';
+         }
+       }
+       //other invalid trials (not to be used in final balanced verison)
+       else {
+         use = '0'
+       }
+       //current trial structure
+       var current_trial = {
+         audio: sound,
+         image: picture,
+         congruent: congruent,
+         correct_response: correct_response,
+         use: use,
+         category: category,
+         sound_type: sound.includes("sound")
+          ? "sound"
+          : sound.includes("label")
+            ? "label"
+            : null
+       };
+       //Adding current trial to stimuli list
+       all_stimuli.push(current_trial);
+     }
+   };
+ ///creating balanced invalid trials/////
+ //dog Invalid
+ var dog_invalid_pics = [
+   "stimuli/pictures/dog_rott_1.jpg",
+   "stimuli/pictures/dog_rott_1.jpg",
+   "stimuli/pictures/dog_york_1.jpg",
+   "stimuli/pictures/dog_york_2.jpg",
+ ]
+ var dog_invalid_sounds = [
+   'stimuli/sounds/motor_label_A.wav',
+   "stimuli/sounds/cough_sound_A.wav",
+   'stimuli/sounds/hiccup_label_B.wav',
+   'stimuli/sounds/drop_sound_B.wav'
+   ]
+ for (let i = 0; i < dog_invalid_pics.length; i++) {
+     for (let j = 0; j < dog_invalid_sounds.length; j++) {
+        let sound_type = '';
      var current_trial = {
-        category: 'flute',
-        audio: flute_invalid_sounds[j],
-        image: flute_invalid_pics[i],
-        match: 'no',
-        correct_response: '0',
-        use: '1',
-      };
-      //Adding current trial to stimuli list
-      all_stimuli.push(current_trial);
-    }
+         category: 'dog',
+         audio: dog_invalid_sounds[j],
+         image: dog_invalid_pics[i],
+         congruent: 'no',
+         correct_response: '0',
+         use: '1',
+         sound_type: dog_invalid_sounds[j].includes("sound")
+          ? "sound"
+          : dog_invalid_sounds[j].includes("label")
+            ? "label"
+            : null
+       };
+       //Adding current trial to stimuli list
+       all_stimuli.push(current_trial);
+     }
+ };
+ //cough Invalid
+ var cough_invalid_pics = [
+   "stimuli/pictures/cough_wom_1.jpg",
+   "stimuli/pictures/cough_wom_2.jpg",
+   "stimuli/pictures/cough_man_1.jpg",
+   "stimuli/pictures/cough_man_2.jpg",
+ ];
+ var cough_invalid_sounds = [
+ 'stimuli/sounds/hiccup_label_A.wav',
+ 'stimuli/sounds/drop_sound_A.wav',
+ 'stimuli/sounds/dog_label_B.wav',
+ 'stimuli/sounds/motor_sound_B.wav'
+ ];
+
+ for (let i = 0; i < cough_invalid_pics.length; i++) {
+     for (let j = 0; j < cough_invalid_sounds.length; j++) {
+      let sound_type = '';
+     var current_trial = {
+         category: 'cough',
+         audio: cough_invalid_sounds[j],
+         image: cough_invalid_pics[i],
+         congruent: 'no',
+         correct_response: '0',
+         use: '1',
+         sound_type: cough_invalid_sounds[j].includes("sound")
+          ? "sound"
+          : cough_invalid_sounds[j].includes("label")
+            ? "label"
+            : null
+       };
+       //Adding current trial to stimuli list
+       all_stimuli.push(current_trial);
+     }
+ };
+ //hiccup Invalid
+ var hiccup_invalid_pics = [
+   "stimuli/pictures/hiccup_wom_1.jpg",
+   "stimuli/pictures/hiccup_wom_2.jpg",
+   "stimuli/pictures/hiccup_man_1.jpg",
+   "stimuli/pictures/hiccup_man_2.jpg",
+ ];
+ var hiccup_invalid_sounds = [
+   'stimuli/sounds/drop_label_A.wav',
+   'stimuli/sounds/dog_sound_A.wav',
+   'stimuli/sounds/motor_label_B.wav',
+   'stimuli/sounds/cough_sound_B.wav'
+ ];
+ for (let i = 0; i < hiccup_invalid_pics.length; i++) {
+     for (let j = 0; j < hiccup_invalid_sounds.length; j++) {
+      let sound_type = '';
+     var current_trial = {
+         category: 'hiccup',
+         audio: hiccup_invalid_sounds[j],
+         image: hiccup_invalid_pics[i],
+         congruent: 'no',
+         correct_response: '0',
+         use: '1',
+         sound_type: hiccup_invalid_sounds[j].includes("sound")
+          ? "sound"
+          : hiccup_invalid_sounds[j].includes("label")
+            ? "label"
+            : null
+       };
+       //Adding current trial to stimuli list
+       all_stimuli.push(current_trial);
+     }
+ };
+ //motorcycle invalid
+ var motorcycle_invalid_pics = [
+   "stimuli/pictures/motor_dirt_1.jpg",
+   "stimuli/pictures/motor_dirt_2.jpg",
+   "stimuli/pictures/motor_harley_1.jpg",
+   "stimuli/pictures/motor_harley_2.jpg",
+ ];
+ var motorcycle_invalid_sounds = [
+   'stimuli/sounds/cough_label_A.wav',
+   'stimuli/sounds/hiccup_sound_A.wav',
+   'stimuli/sounds/drop_label_B.wav',
+   'stimuli/sounds/dog_sound_B.wav'
+   ];
+ for (let i = 0; i < motorcycle_invalid_pics.length; i++) {
+     for (let j = 0; j < motorcycle_invalid_sounds.length; j++) {
+      let sound_type = '';
+     var current_trial = {
+         category: 'motorcycle',
+         audio: motorcycle_invalid_sounds[j],
+         image: motorcycle_invalid_pics[i],
+         congruent: 'no',
+         correct_response: '0',
+         use: '1',
+         sound_type: motorcycle_invalid_sounds[j].includes("sound")
+          ? "sound"
+          : motorcycle_invalid_sounds[j].includes("label")
+            ? "label"
+            : null
+       };
+       //Adding current trial to stimuli list
+       all_stimuli.push(current_trial);
+     }
+ };
+ var drop_invalid_pics = [
+   "stimuli/pictures/drop_single_1.jpg",
+   "stimuli/pictures/drop_single_2.jpg",
+   "stimuli/pictures/drop_multi_1.jpg",
+   "stimuli/pictures/drop_multi_2.jpg",
+ ];
+ var drop_invalid_sounds = [
+   'stimuli/sounds/dog_label_A.wav',
+   'stimuli/sounds/motor_sound_A.wav',
+   'stimuli/sounds/cough_label_B.wav',
+   'stimuli/sounds/hiccup_sound_B.wav'
+   ];
+ for (let i = 0; i < drop_invalid_pics.length; i++) {
+    for (let j = 0; j < drop_invalid_sounds.length; j++) {
+      let sound_type = '';
+     var current_trial = {
+         category: 'drop',
+         audio: drop_invalid_sounds[j],
+         image: drop_invalid_pics[i],
+         congruent: 'no',
+         correct_response: '0',
+         use: '1',
+         sound_type: drop_invalid_sounds[j].includes("sound")
+          ? "sound"
+          : drop_invalid_sounds[j].includes("label")
+            ? "label"
+            : null
+       };
+       //Adding current trial to stimuli list
+       all_stimuli.push(current_trial);
+     }
+ };
 };
-//////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //getting only our balanced stims
 var all_stimuli_filtered = all_stimuli.filter(t => t.use === '1');
@@ -491,16 +865,17 @@ var invalid_trials = stim_order_rand.filter(t => t.correct_response === '0');
 var relevant_stimuli = valid_trials.concat(invalid_trials);
 var final_stimuli = jsPsych.randomization.repeat(relevant_stimuli, 1);
 
-var block1 = final_stimuli.slice(0,24);
-var block2 = final_stimuli.slice(24,48);
-var block3 = final_stimuli.slice(48,72);
-var block4 = final_stimuli.slice(72,96);
-var block5 = final_stimuli.slice(96,120);
-var block6 = final_stimuli.slice(120,144);
-var block7 = final_stimuli.slice(144,168);
-var block8 = final_stimuli.slice(168,192);
+var block1 = final_stimuli.slice(0,3);
+var block2 = final_stimuli.slice(20,40);
+var block3 = final_stimuli.slice(40,60);
+var block4 = final_stimuli.slice(60,80);
+var block5 = final_stimuli.slice(80,100);
+var block6 = final_stimuli.slice(100,120);
+var block7 = final_stimuli.slice(120,140);
+var block8 = final_stimuli.slice(140,160);
 
-var blocks = [block1, block2, block3, block4, block5, block6, block7, block8];
+////block2, block3, block4, block5, block6, block7, block8
+var blocks = [block1];
 
 for (let b=0; b < blocks.length; b++){
   // TRIAL PROCEDURE
@@ -540,15 +915,18 @@ for (let b=0; b < blocks.length; b++){
     var test = {
       type: jsPsychImageKeyboardResponse,
       stimulus: current_trial["image"],
+      sound_type: current_trial["sound_type"],
       choices: ["1","0"],
       data: {
-      match: current_trial['match'],
+      congruent: current_trial['congruent'],
       correct_response: current_trial['correct_response'],
     },
 
     on_finish: function(data){
       console.log(data.response);
-      console.log(data.match);
+      console.log(data.congruent);
+      console.log(data.category);
+      console.log(data.sound_type);
       //score the keyboard response as correct or incorrect
       if(data.response == data.correct_response){
         data.correct = true;
@@ -591,7 +969,7 @@ var age = {
     on_finish: function (data){
       console.log(data.response)
       jsPsych.data.addProperties({
-        participant: data.response.age
+        age: data.response.age
       });
     }
   }; 
@@ -603,36 +981,53 @@ var gender_identity = {
     on_finish: function (data){
       console.log(data.response)
       jsPsych.data.addProperties({
-        participant: data.response.gender
+        gender_id: data.response.gender
       });
     }
   }; 
 timeline.push(gender_identity);
 
 var mus_exp= {
-    type: jsPsychSurveyText,
-    choices: ["1","0"],
-    questions: [{prompt: "Do you have musical experience (e.g. playing an instrument or singing)? Please enter 1 if yes, and 0 if no", name:"mus_exp"}],
-    on_finish: function (data){
-      console.log(data.response)
-      jsPsych.data.addProperties({
-        participant: data.response.mus_exp
-      });
+    type: jsPsychSurveyMultiChoice,
+  questions: [
+    {
+      prompt: "Do you have musical experience (e.g. playing an instrument or singing)?",
+      name: "mus_exp",
+      options: ["yes", "no"],
+      required: true,
+      horizontal: true
     }
-  }; 
+  ],
+  on_finish: function(data) {
+    let response = data.response.mus_exp;
+    console.log(response);
+
+    jsPsych.data.addProperties({
+      mus_exp: response
+    });
+  }
+}; 
 timeline.push(mus_exp);
 
 var inst_exp= {
-    type: jsPsychSurveyText,
-    choices: ["1","0"],
-    questions: [{prompt: "Do you (or have you) play an instrument? ? Please enter 1 if yes, and 0 if no", name:"inst_exp"}],
-    on_finish: function (data){
-      console.log(data.response)
-      jsPsych.data.addProperties({
-        participant: data.response.inst_exp
-      });
+  type: jsPsychSurveyMultiChoice,
+  questions: [
+    {
+      prompt: "Do you (or have you) play/ed an instrument?",
+      name: "inst_exp",
+      options: ["yes", "no"],
+      required: true,
+      horizontal: true
     }
-  }; 
+  ],
+  on_finish: function(data) {
+    let response = data.response.inst_exp;
+    console.log(response);
+    jsPsych.data.addProperties({
+      inst_exp: response
+    });
+  }
+}; 
 timeline.push(inst_exp);
 
 var years_exp= {
@@ -642,7 +1037,7 @@ var years_exp= {
     on_finish: function (data){
       console.log(data.response)
       jsPsych.data.addProperties({
-        participant: data.response.years_exp
+        years_exp: data.response.years_exp
       });
     }
   }; 
@@ -655,7 +1050,7 @@ var casual_exp= {
     on_finish: function (data){
       console.log(data.response)
       jsPsych.data.addProperties({
-        participant: data.response.casual_exp
+        mus_listening: data.response.casual_exp
       });
     }
   }; 
