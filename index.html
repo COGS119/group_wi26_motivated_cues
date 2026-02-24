@@ -876,7 +876,6 @@ var block8 = final_stimuli.slice(140,160);
 
 
 var blocks = [block1,block2, block3, block4, block5, block6, block7, block8];
-
 for (let b=0; b < blocks.length; b++){
   // TRIAL PROCEDURE
   var current_block = blocks[b];
@@ -915,9 +914,11 @@ for (let b=0; b < blocks.length; b++){
     var test = {
       type: jsPsychImageKeyboardResponse,
       stimulus: current_trial["image"],
-      sound_type: current_trial["sound_type"],
+      audio_stim: current_trial["audio"],
       choices: ["1","0"],
+      category: current_trial["category"],
       data: {
+      audio_stim: current_trial['audio'],
       congruent: current_trial['congruent'],
       correct_response: current_trial['correct_response'],
     },
@@ -926,7 +927,7 @@ for (let b=0; b < blocks.length; b++){
       console.log(data.response);
       console.log(data.congruent);
       console.log(data.category);
-      console.log(data.sound_type);
+      console.log(data.audio_stim);
       //score the keyboard response as correct or incorrect
       if(data.response == data.correct_response){
         data.correct = true;
