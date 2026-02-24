@@ -202,23 +202,27 @@
     // PRACTICE TRIAL LOOP
     for (let i = 0; i < practice_stimuli.length; i++) {
 
-      var current = practice_stimuli[i];
+      let current = practice_stimuli[i];
 
-      var fixation = {
+      // fixation
+      timeline.push({
         type: jsPsychHtmlKeyboardResponse,
         stimulus: '<div style="font-size:60px;">+</div>',
         choices: "NO_KEYS",
         trial_duration: 500
-      };
+      });
 
-      var audio = {
+      // play audio
+      timeline.push({
         type: jsPsychAudioKeyboardResponse,
         stimulus: current.audio,
         choices: "NO_KEYS",
-        trial_ends_after_audio: true
-      };
+        trial_ends_after_audio: true,
+        response_allowed_while_playing: false
+      });
 
-      var practice_test = {
+      // image + response
+      timeline.push({
         type: jsPsychImageKeyboardResponse,
         stimulus: current.image,
         choices: ['1', '0'],
@@ -227,27 +231,22 @@
           practice: true
         },
         on_finish: function (data) {
-          if (data.response == data.correct_response) {
-            data.correct = true;
-          } else {
-            data.correct = false;
-          }
+          data.correct = (data.response == data.correct_response);
         }
-      };
+      });
 
-      var feedback = {
+      // feedback
+      timeline.push({
         type: jsPsychHtmlKeyboardResponse,
         stimulus: function () {
-          var last_trial = jsPsych.data.get().last(1).values()[0];
-          if (last_trial.correct) {
-            return "<p style='color:green; font-size:30px;'>Correct!</p>";
-          } else {
-            return "<p style='color:red; font-size:30px;'>Incorrect</p>";
-          }
+          let last_trial = jsPsych.data.get().last(1).values()[0];
+          return last_trial.correct
+            ? "<p style='color:green; font-size:30px;'>Correct!</p>"
+            : "<p style='color:red; font-size:30px;'>Incorrect</p>";
         },
         choices: "NO_KEYS",
         trial_duration: 1000
-      };
+      });
 
       timeline.push(fixation, audio, practice_test, feedback);
     }
