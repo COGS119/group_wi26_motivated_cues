@@ -218,7 +218,6 @@
         stimulus: current.audio,
         choices: "NO_KEYS",
         trial_ends_after_audio: true,
-        response_allowed_while_playing: false
       });
 
       // image + response
@@ -308,6 +307,7 @@
     if (condition_assignment == 'mus') {
       for (let i = 0; i < pictures.length; i++) {
         for (let j = 0; j < sounds.length; j++) {
+          let use = '0';
           let congruent = 'no';
           let correct_response = '1';
           let picture = pictures[i];
@@ -656,6 +656,7 @@
       ];
       for (let i = 0; i < onopictures.length; i++) {
         for (let j = 0; j < onosounds.length; j++) {
+          let use = '0';
           let congruent = 'no';
           let correct_response = '1';
           let picture = onopictures[i];
@@ -1154,14 +1155,14 @@
 
     timeline.push(end_exp);
 
-    /* start the experiment */
-    jsPsych.run(timeline);
-
     //exit fullscreen
     timeline.push({
       type: jsPsychFullscreen,
       fullscreen_mode: false
     });
+
+    /* start the experiment */
+    jsPsych.run(timeline);
   </script>
 
 </html>
