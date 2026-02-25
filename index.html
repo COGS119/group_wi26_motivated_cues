@@ -11,7 +11,6 @@
     <script src="https://unpkg.com/@jspsych/plugin-survey-text@2.0.0"></script>
     <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@2.0.0"></script>
     <script src="https://unpkg.com/@jspsych/plugin-image-keyboard-response@2.0.0"></script>
-    <script src="https://unpkg.com/@jspsych/plugin-image-keyboard-response@2.0.0"></script>
     <script src="https://unpkg.com/@jspsych/plugin-survey-multi-choice@1.1.3"></script>
 
     <!-- This is for data storage - please be sure to keep this script in all future updates to the code!! -->
@@ -211,6 +210,16 @@
 
 
     // PRACTICE TRIAL LOOP
+    timeline.push({
+      type: jsPsychHtmlKeyboardResponse,
+      stimulus: `
+    <div style="font-size:28px;">
+      <p>You will now complete 3 short practice trials.</p>
+      <p>This is just to help you get familiar with the task.</p>
+      <p>Press any key to begin.</p>
+    </div>
+  `
+    });
     for (let i = 0; i < practice_stimuli.length; i++) {
 
       let current = practice_stimuli[i];
@@ -219,7 +228,7 @@
       timeline.push({
         type: jsPsychHtmlKeyboardResponse,
         stimulus: '<div style="font-size:60px;">+</div>',
-        choices: "NO_KEYS",
+        choices: [],
         trial_duration: 500
       });
 
@@ -227,7 +236,7 @@
       timeline.push({
         type: jsPsychAudioKeyboardResponse,
         stimulus: current.audio,
-        choices: "NO_KEYS",
+        choices: [],
         trial_ends_after_audio: true,
       });
 
@@ -254,7 +263,7 @@
             ? "<p style='color:green; font-size:30px;'>Correct!</p>"
             : "<p style='color:red; font-size:30px;'>Incorrect</p>";
         },
-        choices: "NO_KEYS",
+        choices: [],
         trial_duration: 1000
       });
     }
