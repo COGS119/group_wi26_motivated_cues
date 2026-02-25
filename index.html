@@ -283,17 +283,28 @@
         }
       });
 
-      // feedback
+      timeline.push({
+        type: jsPsychAudioKeyboardResponse,
+        stimulus: function () {
+          let last_trial = jsPsych.data.get().filter({ practice: true }).last(1).values()[0];
+          return last_trial.correct
+            ? 'stimuli/sounds/bleep.wav'
+            : 'stimuli/sounds/buzz.wav';
+        },
+        trial_duration: 800,
+        choices: []
+      });
+
       timeline.push({
         type: jsPsychHtmlKeyboardResponse,
         stimulus: function () {
-          let last_trial = jsPsych.data.get().last(1).values()[0];
+          let last_trial = jsPsych.data.get().filter({ practice: true }).last(1).values()[0];
           return last_trial.correct
             ? "<p style='color:green; font-size:30px;'>Correct!</p>"
             : "<p style='color:red; font-size:30px;'>Incorrect</p>";
         },
-        choices: [],
-        trial_duration: 1000
+        trial_duration: 700,
+        choices: []
       });
     }
 
