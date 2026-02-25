@@ -1071,7 +1071,8 @@
             congruent: current_trial['congruent'],
             correct_response: current_trial['correct_response'],
             sound_type: current_trial["sound_type"],
-            stimulus: current_trial["image"]
+            stimulus: current_trial["image"],
+            audio: current_trial['audio']
           },
 
           on_finish: function (data) {
@@ -1079,6 +1080,7 @@
             console.log(data.congruent);
             console.log(data.category);
             console.log(data.sound_type);
+            console.log(data.audio);
             //score the keyboard response as correct or incorrect
             if (data.response == data.correct_response) {
               data.correct = true;
