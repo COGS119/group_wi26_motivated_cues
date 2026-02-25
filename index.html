@@ -137,35 +137,64 @@
     timeline.push(preload);
 
     // define message trial
-  var welcome = {
-    type: jsPsychHtmlKeyboardResponse,
-    stimulus: "Welcome to the experiment! Press any key to begin."
-  }; 
-  timeline.push(welcome);
-  //going into fullscreen
-  var enter_fullscreen = {
-    type: jsPsychFullscreen, 
-    fullscreen_mode: true,
-    message: "<p>The experiment will now switch to full screen.</p><p>Press the button below to continue.</p>",
-    button_label: "Enter fullscreen"
-  };
-  timeline.push(enter_fullscreen)
-  
-  //adding ppt id entry (adapted from label task)
-  
-  var participant_id_entry = {
-    type: jsPsychSurveyText,
-    //the name part of the dict is used later to get whatever they filled in for the question 
-    questions: [{ prompt: "Please enter your participant ID (e.g. p1):", name: "participant_id" }],
-    on_finish: function (data) {
-      //we get the data.response because thats what the ppt actually enters
-      console.log(data.response)
-      jsPsych.data.addProperties({
-        participant: data.response.participant_id
-      });
-    }
-  };
-  timeline.push(participant_id_entry);
+
+    var welcome = {
+
+      type: jsPsychHtmlKeyboardResponse,
+
+      stimulus: "Welcome to the experiment! Press any key to begin."
+
+    };
+
+    timeline.push(welcome);
+
+    //going into fullscreen
+
+    var enter_fullscreen = {
+
+      type: jsPsychFullscreen,
+
+      fullscreen_mode: true,
+
+      message: "<p>The experiment will now switch to full screen.</p><p>Press the button below to continue.</p>",
+
+      button_label: "Enter fullscreen"
+
+    };
+
+    timeline.push(enter_fullscreen)
+
+
+
+    //adding ppt id entry (adapted from label task)
+
+
+
+    var participant_id_entry = {
+
+      type: jsPsychSurveyText,
+
+      //the name part of the dict is used later to get whatever they filled in for the question 
+
+      questions: [{ prompt: "Please enter your participant ID (e.g. p1):", name: "participant_id" }],
+
+      on_finish: function (data) {
+
+        //we get the data.response because thats what the ppt actually enters
+
+        console.log(data.response)
+
+        jsPsych.data.addProperties({
+
+          participant: data.response.participant_id
+
+        });
+
+      }
+
+    };
+
+    timeline.push(participant_id_entry);
 
     var conditions = ['ono', 'mus'];
     var condition_assignment = jsPsych.randomization.sampleWithoutReplacement(conditions, 1)[0];
@@ -993,21 +1022,21 @@
         var fixation = {
           type: jsPsychHtmlKeyboardResponse,
           stimulus: '<div style="font-size:60px;">+</div>',
-          choices: "NO_KEYS",
+          choices: [],
           trial_duration: 250,
         };
         //audio cue
         var audio_cue = {
           type: jsPsychAudioKeyboardResponse,
           stimulus: current_trial["audio"],
-          choices: "NO_KEYS",
+          choices: [],
           trial_ends_after_audio: true
         };
         //1s of blank screen
         var isi = {
           type: jsPsychHtmlKeyboardResponse,
           stimulus: '',
-          choices: "NO_KEYS",
+          choices: [],
           trial_duration: 1000,
         };
 
@@ -1015,11 +1044,11 @@
         var test = {
           type: jsPsychImageKeyboardResponse,
           stimulus: current_trial["image"],
-          sound_type: current_trial["sound_type"],
           choices: ["1", "0"],
           data: {
             congruent: current_trial['congruent'],
             correct_response: current_trial['correct_response'],
+            sound_type: current_trial["sound_type"]
           },
 
           on_finish: function (data) {
