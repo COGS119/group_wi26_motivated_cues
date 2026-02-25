@@ -87,7 +87,10 @@
         "stimuli/pictures/hiccup_man_1.jpg",
         "stimuli/pictures/hiccup_man_2.jpg",
         "stimuli/pictures/hiccup_wom_1.jpg",
-        "stimuli/pictures/hiccup_wom_2.jpg"
+        "stimuli/pictures/hiccup_wom_2.jpg",
+        'stimuli/pictures/guitar_acoustic_1.jpg',
+        'stimuli/pictures/guitar_acoustic_2.jpg',
+        'stimuli/pictures/guitar_electric_1.jpg',
       ],
       audio: [
         'stimuli/sounds/bird_label_A.wav',
@@ -131,7 +134,10 @@
         'stimuli/sounds/hiccup_label_A.wav',
         'stimuli/sounds/hiccup_label_B.wav',
         'stimuli/sounds/hiccup_sound_A.wav',
-        'stimuli/sounds/hiccup_sound_B.wav'
+        'stimuli/sounds/hiccup_sound_B.wav',
+        'stimuli/sounds/guitar_label_A.wav',
+        'stimuli/sounds/guitar_sound_A.wav',
+        'stimuli/sounds/guitar_sound_B.wav',
       ]
     };
     timeline.push(preload);
@@ -209,7 +215,7 @@
       stimulus: `
     <p> On each trial, you will see picture and hear a word or a sound</p>
     <p>Click the '1' key if what you hear matches what you see, and hit the '0' key if what you hear does not match what you see.</p>
-    <p>Try to respond as quickly as you can </p>
+    <p>Try to respond as quickly and accurately as you can </p>
     <p> Press any key to begin.</p>
     `
     };
@@ -221,18 +227,23 @@
 
     var practice_stimuli = [
       {
-        image: "stimuli/pictures/bird_hawk_1.jpg",
-        audio: "stimuli/sounds/bird_label_A.wav",
+        image: "stimuli/pictures/guitar_acoustic_1.jpg",
+        audio: "stimuli/sounds/guitar_label_A.wav",
         correct_response: "1"
       },
       {
-        image: "stimuli/pictures/piano_grand_1.jpg",
+        image: "stimuli/pictures/guitar_acoustic_2.jpg",
+        audio: "stimuli/sounds/guitar_sound_B.wav",
+        correct_response: "1"
+      },
+      {
+        image: "stimuli/pictures/guitar_electric_1.jpg",
         audio: "stimuli/sounds/flute_sound_A.wav",
         correct_response: "0"
       },
       {
-        image: "stimuli/pictures/phone_cell_1.jpg",
-        audio: "stimuli/sounds/phone_sound_A.wav",
+        image: "stimuli/pictures/guitar_acoustic_1.jpg",
+        audio: "stimuli/sounds/guitar_sound_A.wav",
         correct_response: "1"
       }
     ];
@@ -1059,7 +1070,8 @@
           data: {
             congruent: current_trial['congruent'],
             correct_response: current_trial['correct_response'],
-            sound_type: current_trial["sound_type"]
+            sound_type: current_trial["sound_type"],
+            stimulus: current_trial["image"]
           },
 
           on_finish: function (data) {
